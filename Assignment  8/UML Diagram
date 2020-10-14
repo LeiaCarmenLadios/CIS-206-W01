@@ -1,27 +1,64 @@
-UML
------------------------------
+Card
+-value:str
+-suit:str
 
-Cards
-    -deck:array
-    -discard_pile:array
-    +shuffle_deck()
-    +draw_card()
-    +deal_cards()
+Deck
+-size:int
+-deck_of_cards:array
++shuffle()
++draw()
++reset()
 
 Player
-    -hand:array
-    -name:string
-    -num_books:int
+-name:str
+-hand: Hand
+-is_playing:boolean
+-score:int
+-books: array 
++draw_from_deck()
++addToHand()
++removeFromHand()
++addToScore()
++askPlayer()
++display()
 
-GoFish
-    -hand_size:int
-    -deck_size:int
-    -num_players:int
-    -opponenets
-    -winner
-    -starting_order
-    +next_round()
-    +score()
-    +fewer_than_four()
-    +request_fish()
-    +discard_card()
+CPUPlayer(Player)
++askPlayer()
+
+HumanPlayer(Player)
++askPlayer()
+
+Hand
+-hand_length:int
+-player_hand: array
++check_empty()
+
+Game
+-players:array
+-game_deck: Deck
+-currentPlayerTurn: Player
+-player_asked:Player
+-winner:Player
+-game_over: boolean
++deal()
++startNextTurn()
++checkFour()
++checkRequest(player_asked: Player, card:Card)
+
+
+
+https://www.youtube.com/watch?v=rxwQrOUsKWI
+https://bicyclecards.com/how-to-play/go-fish/
+Rules:
+    1>Any player deals one card face up to each player. The player with the lowest card is the dealer. The dealer shuffles the cards, and the player to the right cuts them.
+    2>The dealer completes the cut and deals the cards clockwise one at a time, face down, beginning with the player to the left. If two or three people are playing, each player receives seven cards. If four or five people are playing, each receives five cards. The remainder of the pack is placed face down on the table to form the stock.
+    3>The player to the left of the dealer looks directly at any opponent and says, for example, "Give me your kings," usually addressing the opponent by name and specifying the rank that they want, from ace down to two.
+    4>The player who is "fishing “must have at least one card of the rank that was asked for in their hand. The player who is addressed must hand over all the cards requested.
+    5>If the player has none, they say, "Go fish!" and the player who made the request draws the top card of the deck and places it in their hand.
+    6>If a player gets one or more cards of the named rank that was asked for, they are entitled to ask the same or another player for a card. The player can ask for the same card or a different one. So long as the player succeeds in getting cards (makes a catch), their turn continues.
+    7>When a player makes a catch, they must reveal the card so that the catch is verified.
+    8>If a player gets the fourth card of a book, the player shows all four cards, places them on the table face up in front of everyone, and plays again.
+    9>If the player goes fishing without "making a catch" (does not receive a card he asked for), the turn passes to the left.
+    10>During the game, if a player is left without cards, they may (when it's their turn to play), draw from the stock and then ask for cards of that rank. If there are no cards left in the stock, they are out of the game.
+    11>The game ends when all thirteen books have been won. The winner is the player with the most books.
+
