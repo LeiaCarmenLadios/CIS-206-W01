@@ -16,7 +16,6 @@ Player
 -score:int
 -books: array 
 +draw_from_deck()
-+addToHand()
 +removeFromHand()
 +addToScore()
 +askPlayer()
@@ -31,7 +30,7 @@ HumanPlayer(Player)
 Hand
 -hand_length:int
 -player_hand: array
-+check_empty()
++addToHand()
 
 Game
 -players:array
