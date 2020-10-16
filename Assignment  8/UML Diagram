@@ -20,11 +20,6 @@ Player
 +addToScore()
 +askPlayer()
 +display()
-
-CPUPlayer(Player)
-+askPlayer()
-
-HumanPlayer(Player)
 +askPlayer()
 
 Hand
