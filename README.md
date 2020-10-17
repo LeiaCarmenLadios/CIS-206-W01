@@ -10,3 +10,9 @@ We have also decided to use Signal as a form of communication and will be hostin
 We agreed on the tasks listed on the Gantt Chart and drafted a rough UML diagram of the program we want to create. 
 
 We have also established a schedule of weekly meetings which will be on Tuesdays and Fridays. We are also open to impromptu meetings if we feel it is necessary.
+
+## Assignment 9
+To start the process of coding our Go Fish card game, we learned how to set up the Live Share extension on Visual Studio Code and will be using that 
+to collaborate and code together in real time. 
+
+Leia: This was one of my first few times that I have ever coded in Python and have realized how applicable some of the concepts are from other languages I am more familiar with. I am glad that I am able to contribute more than I thought I would. 
