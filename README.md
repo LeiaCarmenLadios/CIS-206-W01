@@ -15,7 +15,6 @@ We have also established a schedule of weekly meetings which will be on Tuesdays
 To start the process of coding our Go Fish card game, we learned how to set up the Live Share extension on Visual Studio Code and will be using that 
 to collaborate and code together in real time. 
 
-This week, we started to explore our dynamic in terms of creating a project together and spent a couple of hours coding.
+This week, we started to explore our dynamic in terms of creating a project together. This was one of Leia's first few times coding in Python and have realized how applicable some of the concepts are from other languages she is more familiar with.
 
-This was one of Leia's first few times coding in Python and have realized how applicable some of the concepts are from other languages she is more familiar with. 
 
