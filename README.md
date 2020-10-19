@@ -17,5 +17,7 @@ to collaborate and code together in real time.
 
 This week, we started to explore our dynamic in terms of creating a project together. This was one of Leia's first few times coding in Python and have realized how applicable some of the concepts are from other languages she is more familiar with.
 
+We revised our UML diagram from the first week to add an additional class and reconfigured some of our methods to better suit the game.
+
 We also started to develop two of our classes that we will implement in our Go Fish game, a Card class and Deck class. The Card class allows us to implement a card with suit and value attributes. The Deck class allows us to implement a playing deck built from Card objects with basic methods such as draw, shuffle and reset the deck.
 
