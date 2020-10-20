@@ -16,16 +16,15 @@ Player
 -score:int
 -books: array 
 +draw_from_deck()
-+removeFromHand()
 +addToScore()
 +askPlayer()
 +display()
-+askPlayer()
 
 Hand
 -hand_length:int
 -player_hand: array
 +addToHand()
++removeFromHand()
 
 Game
 -players:array
