@@ -8,6 +8,7 @@ Deck
 +shuffle()
 +draw()
 +reset()
++print_deck()
 
 Player
 -name:str
@@ -21,10 +22,10 @@ Player
 +display()
 
 Hand
--hand_length:int
 -player_hand: array
-+addToHand()
-+removeFromHand()
++addToHand(value:str, suit:str)
++removeFromHand(value:str, suit:str)
++print_hand
 
 Game
 -players:array
