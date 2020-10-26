@@ -16,7 +16,6 @@ Player
 -is_playing:boolean
 -score:int
 -books: array 
-+draw_from_deck()
 +addToScore()
 +askPlayer()
 +display()
