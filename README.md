@@ -24,5 +24,8 @@ We also started to develop two of our classes that we will implement in our Go F
 ## Assignment 10
 This week, we started to develop our Player class to add to our Card, Deck, and Hand classes. The Player class has proven to be a challenge as it incorporates much of the Game class that we have not yet created. 
 
-We also added properties back to our Card class and will continue augment some of our other classes to also utilize properties.
+We also added properties back to our Card class and will continue to augment some of our other classes to also utilize properties.
 
+Revisions have been made so that we have a basic Game class to test our Player class accurately and mimic how it would look like in an actual game. 
+
+We think we are a little bit behind on our progress and are hoping we get caught up by getting a good portion of the Player and Game class implemented. We would like to have as much done by Thanksgiving as possible as well. 
