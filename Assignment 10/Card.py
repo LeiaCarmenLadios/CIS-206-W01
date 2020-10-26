@@ -1,5 +1,5 @@
 class Card:
-     @property
+    @property
     def card_value(self):
         """Gets/returns the VALUE"""
         return self._card_value
