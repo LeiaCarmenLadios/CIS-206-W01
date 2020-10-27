@@ -32,14 +32,14 @@ class Deck:
         self.__init__()
 
 
-
-# obj = Deck()
-# print(obj)
-# print("\n")
-# obj.shuffle()
-# print(obj)
-# for c in obj.deck_of_cards:   
-#     print(c.card_suit + c.card_value)
-# obj.reset()
-# for c in obj.deck_of_cards:   
-#     print(c.card_suit + c.card_value)
+if __name__ == "__main__":
+    obj = Deck()
+    print(obj)
+    print("\n")
+    obj.shuffle()
+    print(obj)
+    for c in obj.deck_of_cards:
+        print(c.card_suit + c.card_value)
+    obj.reset()
+    for c in obj.deck_of_cards:
+        print(c.card_suit + c.card_value)

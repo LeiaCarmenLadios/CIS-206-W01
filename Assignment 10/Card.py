@@ -15,6 +15,3 @@ class Card:
 
     def __str__(self):
         return "{} of {}".format(self.card_value, self.card_suit)
-    
-    
-   

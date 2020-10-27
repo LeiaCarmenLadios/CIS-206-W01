@@ -74,10 +74,8 @@ class Player:
     def __str__(self):
         return "name: {} score: {}\n".format(self.name, self.score)
 
-# p = Player('player 1')
-# p.score = 4
-# p.askPlayer()
 
-
-
-        
+if __name__ == "__main__":
+    p = Player('player 1')
+    p.score = 4
+    p.askPlayer()
