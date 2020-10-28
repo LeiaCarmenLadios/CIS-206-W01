@@ -23,6 +23,7 @@ class Hand:
         for crd in self.player_hand:
             print_hand += "{} of {}\n".format(crd.card_value, crd.card_suit)
         return print_hand
-        
-hand = Hand()
-print(hand)
+
+if __name__ == "__main__":
+    hand = Hand()
+    print(hand)
