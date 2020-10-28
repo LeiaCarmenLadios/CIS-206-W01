@@ -18,15 +18,6 @@ class TestDeck(unittest.TestCase):
     def test_deck_length_correct(self):
         deck = Deck_library.Deck()
         self.assertEqual(len(deck.deck_of_cards), 52)
-        
-    def test_deck_resets_correct(self):
-        deck = Deck_library.Deck()
-        deck.reset()
-        first_crd = Card_library.Card('A','♧') # test that first card vliue and last card value on the created deck is correct 
-        last_crd = Card_library.Card('K', '♤') # and deck is populated correctly
-        value_check = [first_crd._card_value, first_crd._card_suit, last_crd._card_value, last_crd._card_suit]
-        deck_values = [deck._deck_of_cards[0]._card_value, deck._deck_of_cards[0]._card_suit, deck._deck_of_cards[51]._card_value, deck._deck_of_cards[51]._card_suit]
-        self.assertEqual(deck_values, value_check)
 
     def test_deck_correct_valuesuits(self):
         VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
@@ -36,10 +27,39 @@ class TestDeck(unittest.TestCase):
             self.assertIn(card.card_value, VALUE)
         for card in deck._deck_of_cards:
             self.assertIn(card.card_suit, SUIT)
+        
+    def test_deck_check_duplicate_cards(self):
+        deck = Deck_library.Deck()
+        self.assertEqual(len(deck.deck_of_cards), len(set(deck.deck_of_cards)))
+
+    def test_deck_resets_correct(self):
+        deck = Deck_library.Deck()
+        deck.reset()
+        first_crd = Card_library.Card('A','♧') # test that first card vliue and last card value on the created deck is correct 
+        last_crd = Card_library.Card('K', '♤') # and deck is populated correctly
+        value_check = [first_crd._card_value, first_crd._card_suit, last_crd._card_value, last_crd._card_suit]
+        deck_values = [deck._deck_of_cards[0]._card_value, deck._deck_of_cards[0]._card_suit, deck._deck_of_cards[51]._card_value, deck._deck_of_cards[51]._card_suit]
+        self.assertEqual(deck_values, value_check)
+
+    def test_deck_resets_correct2(self):
+        deck1 = Deck_library.Deck()
+        deck2 = deck1
+        self.assertEqual(deck1.deck_of_cards, deck2.deck_of_cards)
+        deck3 = copy.deepcopy(deck2)
+        deck3.shuffle()
+        self.assertNotEqual(deck2, deck3)
+        deck3.reset()
+        for i in range(len(deck3._deck_of_cards)):
+            self.assertEqual(deck3._deck_of_cards[i].__str__(), deck1._deck_of_cards[i].__str__())
 
     def test_deck_string_magic_method_outputs(self):
         deck = Deck_library.Deck()
         value_check = deck.__str__()
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        print(deck, end='')
+        sys.stdout = sys.__stdout__
+        self.assertEqual(capturedOutput.getvalue(), value_check)
         self.assertEqual(value_check[0:7], 'A of ♧\n')
 
     def test_deck_draw_correct(self):
