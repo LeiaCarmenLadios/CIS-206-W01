@@ -5,6 +5,9 @@ import io
 import sys
 import copy
 
+VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+SUIT = ['♧', '♢', '♡', '♤']
+
 class TestDeck(unittest.TestCase):
 
     def test_deck_initializes_correct(self):
@@ -20,8 +23,6 @@ class TestDeck(unittest.TestCase):
         self.assertEqual(len(deck.deck_of_cards), 52)
 
     def test_deck_correct_valuesuits(self):
-        VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-        SUIT = ['♧', '♢', '♡', '♤']
         deck = Deck_library.Deck()
         for card in deck._deck_of_cards:
             self.assertIn(card.card_value, VALUE)
@@ -31,6 +32,24 @@ class TestDeck(unittest.TestCase):
     def test_deck_check_duplicate_cards(self):
         deck = Deck_library.Deck()
         self.assertEqual(len(deck.deck_of_cards), len(set(deck.deck_of_cards)))
+
+    def test_deck_check_13_cards_of_each_suit(self):
+        deck = Deck_library.Deck()
+        for suit in SUIT:
+            suit_count = 0
+            for card in deck.deck_of_cards:
+                if card.card_suit == suit:
+                    suit_count += 1
+            self.assertEqual(suit_count, 13)
+
+    def test_deck_check_4_cards_of_each_value(self):
+        deck = Deck_library.Deck()
+        for value in VALUE:
+            value_count = 0
+            for card in deck.deck_of_cards:
+                if card.card_value == value:
+                    value_count += 1
+            self.assertEqual(value_count, 4)
 
     def test_deck_resets_correct(self):
         deck = Deck_library.Deck()
