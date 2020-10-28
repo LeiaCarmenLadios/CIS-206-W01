@@ -19,6 +19,11 @@ class TestCard(unittest.TestCase):
         sys.stdout = sys.__stdout__
         self.assertEqual(capturedOutput.getvalue(), 'A of D\n')
 
+    def test_card_property(self): # Not sure a property really needs to be tested
+        crd = Card_library.Card('A', 'P')
+        crd_suit = crd._card_suit
+        crd_value = crd._card_value
+        self.assertEqual(f'{crd.card_value} of {crd.card_suit}', f'{crd_value} of {crd_suit}')
+
 if __name__ == '__main__':
     unittest.main()
-    
