@@ -8,6 +8,7 @@ class Card:
     def card_suit(self):
         """Gets/returns SUIT value"""
         return self._card_suit
+
     
     def __init__(self, card_value = None, card_suit = None):
         self._card_value = card_value
@@ -15,6 +16,3 @@ class Card:
 
     def __str__(self):
         return "{} of {}".format(self.card_value, self.card_suit)
-    
-    
-   
