@@ -47,26 +47,23 @@ class Player:
        
         # print out their hand so that they know what options are available to them
         # They can only ask for a card if they have at least one of that value card
-        print(self.player_hand)
-        askplayer_card = input("which card would you like to ask for? [card value]: ") # string 
-        value_card,suit_card = askplayer_card.split(' of ')
-
-        print(suit_card)
         while True:
+            print(self.player_hand)
+            askplayer_card = input("Which card would you like to ask for? [card value]: ") # string 
+            value_card,suit_card = askplayer_card.split(' of ')
             try:
-                ask_card = Card_library.Card()
-                if suit_card.lower() == 'hearts':
+                # ask_card = Card_library.Card() # defualt
+                if suit_card.lower() == 'hearts' or suit_card == '♡':
                     ask_card = Card_library.Card(value_card, '♡')
-                elif suit_card.lower() == 'spades':
+                elif suit_card.lower() == 'spades' or suit_card == '♤':
                     ask_card = Card_library.Card(value_card, '♤')
-                elif suit_card.lower() == 'clubs':
+                elif suit_card.lower() == 'clubs' or suit_card == '♧':
                     ask_card = Card_library.Card(value_card, '♧')
-                elif suit_card.lower() == 'diamonds':
+                elif suit_card.lower() == 'diamonds' or suit_card == '♢':
                     ask_card = Card_library.Card(value_card, '♢')
                 return ask_card
             except:
                 print('Invalid option. Try Again')
-                
               
         # if askplayer_card in self.player_hand:
         #     if askplayer_card in askplayer_player.player_hand:
