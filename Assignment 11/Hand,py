@@ -1,0 +1,50 @@
+import Card as Card_library
+import Deck as Deck_library
+
+class Hand:
+
+    @property
+    def player_hand(self):
+        return self._player_hand
+    
+    @player_hand.setter
+    def player_hand(self, hand):
+        self._player_hand = hand
+    
+    def __init__(self):           
+        self.player_hand = []
+
+    def addToHand(self, value, suit):
+        add_crd = Card_library.Card(value, suit)
+        self.player_hand.append(add_crd)
+
+    def removeFromHand(self, value, suit):
+        # remove_crd = Card_library.Card(value, suit)     # QUESTION!!!!
+        hand_length = len(self.player_hand)
+        i = 0
+        while(i < (hand_length)):
+            if (self.player_hand[i].card_value == value):
+                self.player_hand.remove(self.player_hand[i]) #be careful because the length of the list changes when you remove something
+                i = 0                                             #THIS TOOK US TOO LONG LOL
+                hand_length = len(self.player_hand)
+            else:
+                i += 1
+
+    def __str__(self):
+        print_hand = ''
+        for crd in self.player_hand:
+            print_hand += "{} of {}\n".format(crd.card_value, crd.card_suit)
+        return print_hand
+
+if __name__ == "__main__":
+    hand = Hand()
+    hand.addToHand('A','♡')
+    hand.addToHand('A','♤')
+    hand.addToHand('K','♤')
+    hand.addToHand('K','♡')
+    hand.addToHand('2','♡')
+   
+    hand.removeFromHand('2','♡')
+    print(hand)
+   
+ 
