@@ -12,6 +12,10 @@ class TestHand(unittest.TestCase):
         hand = Hand_library.Hand()
         self.assertEqual(len(hand.player_hand), 0)
 
+    def test_hand_intitializes_correct2(self):
+        hand = Hand_library.Hand()
+        self.assertEqual(type(hand.player_hand), list)
+
     def test_hand_addToHand(self, value='A', suit='♡'):
         hand = Hand_library.Hand()
         hand.addToHand(value,suit)
