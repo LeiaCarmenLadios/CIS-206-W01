@@ -31,5 +31,10 @@ Revisions have been made so that we have a basic Game class to test our Player c
 We think we are a little bit behind on our progress and are hoping we get caught up by getting a good portion of the Player and Game class implemented. We would like to have as much done by Thanksgiving as possible as well. 
 
 ## Assignment 11
-We came across a problem in our removeFromHand method in the Hand class and spent a chunk of our time figuring that out. We found out that we had to be careful when iterating through an array if we are changing the length of the array with a remove function. 
+This week, we refined some of our unit tests for our Card and Deck classes to make our testing more complete. We also started to add unit tests for our Hand class. 
 
+In addition to testing, we also added some validation to our Card and Player classes to check that the user input is valid.
+
+We revised some of the methods in each of our classes based on issues discovered through more thorough testing.
+
+We are still a little behind in our Player and Game class implementation. We managed to bolster some of our testing for our other classes which should allow us to focus on our Player and Game classes this week.
