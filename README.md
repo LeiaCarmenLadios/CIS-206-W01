@@ -35,6 +35,6 @@ This week, we refined some of our unit tests for our Card and Deck classes to ma
 
 In addition to testing, we also added some validation to our Card and Player classes to check that the user input is valid.
 
-We revised some of the methods in each of our classes based on issues discovered through more thorough testing.
+We revised some of the methods in each of our classes based on issues discovered through more thorough testing. We spent a lot of time troubleshooting as a team and keeping track of what variables were doing to figure out an issue with how we were looping through a range while changing the range. This helped us learn how to debug better in the future.
 
 We are still a little behind in our Player and Game class implementation. We managed to bolster some of our testing for our other classes which should allow us to focus on our Player and Game classes this week.
