@@ -53,17 +53,18 @@ class Player:
             value_card,suit_card = askplayer_card.split(' of ')
             try:
                 # ask_card = Card_library.Card() # defualt
-                if suit_card.lower() == 'hearts' or suit_card == '♡':
+                if suit_card[0].lower() == 'h' or suit_card == '♡':
                     ask_card = Card_library.Card(value_card, '♡')
-                elif suit_card.lower() == 'spades' or suit_card == '♤':
+                elif suit_card[0].lower() == 's' or suit_card == '♤':
                     ask_card = Card_library.Card(value_card, '♤')
-                elif suit_card.lower() == 'clubs' or suit_card == '♧':
+                elif suit_card[0].lower() == 'c' or suit_card == '♧':
                     ask_card = Card_library.Card(value_card, '♧')
-                elif suit_card.lower() == 'diamonds' or suit_card == '♢':
+                elif suit_card[0].lower() == 'd' or suit_card == '♢':
                     ask_card = Card_library.Card(value_card, '♢')
                 return ask_card
             except:
                 print('Invalid option. Try Again')
+                print('Ex: A of ♧ or A of spade')
               
         # if askplayer_card in self.player_hand:
         #     if askplayer_card in askplayer_player.player_hand:
@@ -71,6 +72,9 @@ class Player:
         # else:
         #     pass # PLACEHOLDER
 
+    def addToScore(self):
+        score += 1
+    
     def __str__(self):
         return "name: {} score: {}\n".format(self.name, self.score)
 
