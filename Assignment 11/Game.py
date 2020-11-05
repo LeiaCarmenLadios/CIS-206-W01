@@ -21,8 +21,11 @@ class Game:
 
       def deal(self):
          self._game_deck.shuffle()
-         # for player in self.player_list:
-         #     player.player_hand.append(Deck.)
+         print(self.game_deck)
+         for player in self.player_list:
+             card_deal = self.game_deck.deck_of_cards[len(self.game_deck.deck_of_cards)-1]
+             self.game_deck.draw()
+             player.player_hand.addToHand(card_deal.card_value, card_deal.card_suit)
 
       def checkFour(self, player):
          # crd = Card_library.Card('A', '♢')
@@ -41,8 +44,6 @@ class Game:
             player_hand_list.append(player.player_hand.hand_cards[ix].card_value)
          player_hand_list.sort()
          to_remove = []
-         # for phl_value in range(len(player_hand_list)):
-         
          counter = 1
          for i in range(len(player_hand_list)):
             check_card = player_hand_list[i]
@@ -52,11 +53,8 @@ class Game:
                if counter == 4:
                   to_remove.append(check_card)
                   counter = 1
-
-         print('to_remove = ', to_remove)
-         print(player.player_hand)
          for ix in to_remove:
-            player.player_hand.removeFromHand(crd.card_value)
+            player.player_hand.removeFromHand(to_remove[ix])
          print(player.player_hand)
 
                    
@@ -66,7 +64,6 @@ class Game:
 if __name__ == "__main__":
     game = Game()
     game.deal()
-   #  print(game.game_deck)
-    game.checkFour(game.player_list[0])
-        # issues: the deck does not seem to be shuffling. I tested the shuffle method in the Deck class and it works just fine there. 
-        # I think there's something wrong in that the shuffled deck is not actually being saved in the game deck. 
+    print("Fist Player Hand: ", game.player_list[0].player_hand)
+    print("Second Player Hand: ", game.player_list[1].player_hand)
+    
