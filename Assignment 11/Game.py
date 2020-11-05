@@ -22,11 +22,14 @@ class Game:
       def deal(self):
          self._game_deck.shuffle()
          print(self.game_deck)
-         for player in self.player_list:
-             card_deal = self.game_deck.deck_of_cards[len(self.game_deck.deck_of_cards)-1]
-             self.game_deck.draw()
-             player.player_hand.addToHand(card_deal.card_value, card_deal.card_suit)
-
+         counter = 5
+         while(counter != 0):
+            for player in self.player_list:
+               card_deal = self.game_deck.deck_of_cards[len(self.game_deck.deck_of_cards)-1]
+               self.game_deck.draw()
+               player.player_hand.addToHand(card_deal.card_value, card_deal.card_suit)
+            counter -= 1
+            
       def checkFour(self, player):
          # crd = Card_library.Card('A', '♢')
          # player.player_hand.addToHand(crd.card_value, crd.card_suit)
