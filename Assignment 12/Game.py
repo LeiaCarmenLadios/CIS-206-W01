@@ -65,8 +65,8 @@ class Game:
                   counter = 1
          for ix in to_remove:
             player.player_hand.removeFromHand(to_remove[ix])
-         print(player.player_hand)
 
+            
       def checkRequest(self, current_player, player_asked, card):
          is_found = False
          suits_to_transfer = []
