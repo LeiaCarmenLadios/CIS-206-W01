@@ -4,7 +4,7 @@ import Deck as Deck_library
 
 class Player:
    
-    @property # allows us to access the method like it's a property
+    @property 
     def name(self):
         return self._name
 
@@ -49,8 +49,9 @@ class Player:
         # They can only ask for a card if they have at least one of that value card
         while True:
             print(self.player_hand)
-            askplayer_card = input("Which card would you like to ask for? [card value]: ") # string
-            value_card, suit_card = askplayer_card.split(' of ')
+            askplayer_card = input("Which card would you like to ask for? [Value of Suit] ") # string
+            try:
+                value_card, suit_card = askplayer_card.split(' of ')
                 # ask_card = Card_library.Card()
                 if suit_card[0].lower() == 'h' or suit_card == '♡':
                     ask_card = Card_library.Card(value_card, '♡')
@@ -63,7 +64,7 @@ class Player:
                 return ask_card
             except:
                 print('Invalid option. Try Again')
-                print('Ex: A of ♧ or A of spade')
+                print('Ex: A of ♧ or A of spade\n')
               
         # if askplayer_card in self.player_hand:
         #     if askplayer_card in askplayer_player.player_hand:
@@ -75,7 +76,7 @@ class Player:
     
 
     def addToScore(self):
-        score += 1
+        self.score += 1
     
     def __str__(self):
         return "name: {} score: {}\n".format(self.name, self.score)
@@ -85,3 +86,4 @@ if __name__ == "__main__":
     p = Player('player 1')
     p.score = 4
     p.askForCard()
+
