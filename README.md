@@ -38,3 +38,14 @@ In addition to testing, we also added some validation to our Card and Player cla
 We revised some of the methods in each of our classes based on issues discovered through more thorough testing. We spent a lot of time troubleshooting as a team and keeping track of what variables were doing to figure out an issue with how we were looping through a range while changing the range. This helped us learn how to debug better in the future.
 
 We are still a little behind in our Player and Game class implementation. We managed to bolster some of our testing for our other classes which should allow us to focus on our Player and Game classes this week.
+
+## Assignment 12
+This week we started creating a main program underneath the game class so that we can get a text based program going. 
+
+We have been working on looping the prompts at the beginning of the game and moving different methods around where they make better sense to be. 
+
+We are constantly updating our UML diagram and we have found it useful as the program is large which would make remembering the variables and methods difficult to remember. 
+
+We came into some problems when it came to naming different attributes. We noticed that we had named some attributes and variables the same name and that confused us.
+
+We will start implementing more descriptive naming conventions.
