@@ -8,27 +8,31 @@ import io
 
 class TestHand(unittest.TestCase):
 
+    def test_hand_isinstance_of_hand_class(self):
+        hand = Hand_library.Hand()
+        self.assertIsInstance(hand, Hand_library.Hand, "Object is not instance of Hand class")  
+
     def test_hand_initializes_correct(self):
         hand = Hand_library.Hand()
-        self.assertEqual(len(hand.player_hand), 0)
+        self.assertEqual(len(hand.hand_cards), 0)
 
     def test_hand_intitializes_correct2(self):
         hand = Hand_library.Hand()
-        self.assertEqual(type(hand.player_hand), list)
+        self.assertEqual(type(hand.hand_cards), list)
 
     def test_hand_addToHand(self, value='A', suit='♡'):
         hand = Hand_library.Hand()
         hand.addToHand(value,suit)
-        added_card = [hand.player_hand[0].card_value, hand.player_hand[0].card_suit]
+        added_card = [hand.hand_cards[0].card_value, hand.hand_cards[0].card_suit]
         hand_test = ['A','♡']
         self.assertEqual(added_card, hand_test)  
     
-    def test_hand_removeFromHand(self, value='A', suit='♡'):
+    def test_hand_removeFromHand(self, value='A'):
         hand = Hand_library.Hand()
         hand.addToHand('A','♡')
         hand.addToHand('K','♤')
-        hand.removeFromHand(value,suit)
-        remaining_card = [hand.player_hand[0].card_value, hand.player_hand[0].card_suit]
+        hand.removeFromHand(value)
+        remaining_card = [hand.hand_cards[0].card_value, hand.hand_cards[0].card_suit]
         hand_test = ['K','♤']
         self.assertEqual(remaining_card, hand_test)
 
