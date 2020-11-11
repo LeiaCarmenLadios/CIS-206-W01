@@ -5,6 +5,11 @@ import sys
 
 class TestCard(unittest.TestCase):
 
+    def test_card_isinstance_of_card_class(self):
+        crd = Card_library.Card('A', '♧')
+        message = "Object is not instance of Card class"
+        self.assertIsInstance(crd, Card_library.Card, message)   
+
     def test_card_initializes_correct(self):
         crd = Card_library.Card('A', '♧')
         crd_values = [crd._card_value, crd._card_suit]
