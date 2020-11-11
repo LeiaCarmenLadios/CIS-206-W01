@@ -10,6 +10,11 @@ SUIT = ['♧', '♢', '♡', '♤']
 
 class TestDeck(unittest.TestCase):
 
+    def test_deck_isinstance_of_deck_class(self):
+        deck = Deck_library.Deck()
+        message = "Object is not instance of Deck class"
+        self.assertIsInstance(deck, Deck_library.Deck, message)   
+
     def test_deck_initializes_correct(self):
         deck = Deck_library.Deck()
         first_crd = Card_library.Card('A','♧') # test that first card vliue and last card value on the created deck is correct 
