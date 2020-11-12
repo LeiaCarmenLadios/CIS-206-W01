@@ -37,15 +37,4 @@ class Hand:
         return print_hand
 
 if __name__ == "__main__":
-    hand = Hand()
-    hand.addToHand('A','♡')
-    hand.addToHand('A','♤')
-    hand.addToHand('K','♤')
-    hand.addToHand('K','♡')
-    hand.addToHand('2','♡')
-   
-    hand.removeFromHand('2','♡')
-    print(hand)
-   
- 
-
+    pass
