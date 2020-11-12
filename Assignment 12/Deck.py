@@ -25,8 +25,11 @@ class Deck:
        return random.shuffle(self.deck_of_cards)
 
     def draw(self):
-        return self._deck_of_cards.pop()
-
+        if len(self.deck_of_cards) > 0:
+            return self.deck_of_cards.pop()
+        else:
+            return None
+        
     def reset(self):
         self.__init__()
 
