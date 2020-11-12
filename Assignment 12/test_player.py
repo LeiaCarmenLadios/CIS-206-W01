@@ -53,57 +53,27 @@ class TestPlayer(unittest.TestCase):
         sys.stdout = sys.__stdout__
         message = "__str__ method output displaying incorrect."
         self.assertEqual(capturedOutput.getvalue(), value_check, message)
-        self.assertEqual(value_check, 'name: Joe score: 0\n', message)
+        self.assertEqual(value_check, '\nName: Joe Score: 0 Books: []', message)
 
-    def test_player_askForCard_returns_correct_card_object_initial(self): 
+    def test_player_askForCard_returns_correct_card_object_uppercase(self): 
         player = Player_library.Player()
-        input_values = ['A of S']
+        input_values = ['A']
         def input(prompt=None):
             return input_values.pop()
         Player_library.input = input
         asked_card = player.askForCard()
         self.assertEqual(asked_card.card_value, 'A')
-        self.assertEqual(asked_card.card_suit, '♤')
+        self.assertEqual(asked_card.card_suit, '♡')
 
-    def test_player_askForCard_returns_correct_card_object_initial_lowercase(self): 
+    def test_player_askForCard_returns_correct_card_object_lowercase(self): 
         player = Player_library.Player()
-        input_values = ['a of s']
+        input_values = ['a']
         def input(prompt=None):
             return input_values.pop()
         Player_library.input = input
         asked_card = player.askForCard()
         self.assertEqual(asked_card.card_value, 'A')
-        self.assertEqual(asked_card.card_suit, '♤')
-
-    def test_player_askForCard_returns_correct_card_object_suitname(self): 
-        player = Player_library.Player()
-        input_values = ['A of Spade']
-        def input(prompt=None):
-            return input_values.pop()
-        Player_library.input = input
-        asked_card = player.askForCard()
-        self.assertEqual(asked_card.card_value, 'A')
-        self.assertEqual(asked_card.card_suit, '♤')
-
-    def test_player_askForCard_returns_correct_card_object_cardname_and_suitname(self): 
-        player = Player_library.Player()
-        input_values = ['Ace of Spade']
-        def input(prompt=None):
-            return input_values.pop()
-        Player_library.input = input
-        asked_card = player.askForCard()
-        self.assertEqual(asked_card.card_value, 'A')
-        self.assertEqual(asked_card.card_suit, '♤')
-
-    def test_player_askForCard_returns_correct_card_object_suitsymbol(self): 
-        player = Player_library.Player()
-        input_values = ['A of ♤']
-        def input(prompt=None):
-            return input_values.pop()
-        Player_library.input = input
-        asked_card = player.askForCard()
-        self.assertEqual(asked_card.card_value, 'A')
-        self.assertEqual(asked_card.card_suit, '♤')
+        self.assertEqual(asked_card.card_suit, '♡')
 
     @unittest.skip("Not working")
     def test_player_askForCard_validation_incorrect_card_entered(self): 
@@ -118,6 +88,13 @@ class TestPlayer(unittest.TestCase):
         sys.stdout = sys.__stdout__
         self.assertEqual(capturedOutput.getvalue(), 'Invalid card. Try Again\nEx: A of ♧ or A of spade\n')
 
+    def test_player_addToScore_adds_correct(self):
+        player = Player_library.Player()
+        self.assertEqual(player.score, 0, "Player score not initialized to 0")
+        player.addToScore()
+        self.assertEqual(player.score, 1, "Player score not adding correctly")
+
 
 if __name__ == '__main__':
     unittest.main()
+    
