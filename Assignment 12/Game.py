@@ -58,7 +58,7 @@ class Game:
          for ix in range(len(player.player_hand.hand_cards)):
             player_hand_list.append(player.player_hand.hand_cards[ix].card_value)
          player_hand_list.sort()
-         print(player_hand_list)
+         # print(player_hand_list)
          to_remove = []
          counter = 1
          something = len(player_hand_list)
@@ -73,13 +73,10 @@ class Game:
                   to_remove.append(check_card)
                   counter = 0
 
-
          for ix in to_remove:
             player.addToScore()
             player.books.append(ix)
             player.player_hand.removeFromHand(ix)
-
-
 
       def checkRequest(self, current_player, player_asked, card):
          is_found = False
@@ -101,10 +98,10 @@ class Game:
          name_of_player = input()
          player_asked_for = Player_library.Player()
          print(player_asked_for.player_hand)
-         for plyr in self.player_list:    
-            if plyr.name == name_of_player:
+         for plyr in self.player_list:
+            if plyr.name.lower() == name_of_player.lower():
                player_asked_for = plyr
-         if name_of_player == player_asked_for.name:
+         if name_of_player.lower() == player_asked_for.name.lower():
             is_found = self.checkRequest(current_player_obj, player_asked_for, card_needed)
          else:
             print("There is no player with that name. Please try again.")  
@@ -112,19 +109,5 @@ class Game:
 
 
 if __name__ == "__main__":
-   # game = Game()
-   # game.addPlayers('Leia')
-   # game.addPlayers('Jacob')
-   # game.deal()
-   # game.player_list[1].player_hand.addToHand('K','♢')
-   # game.player_list[1].player_hand.addToHand('K','♡')
-   # print(game.player_list[0].name, game.player_list[0].player_hand)
-   # print(game.player_list[1].name, game.player_list[1].player_hand)
-   # save_card = game.player_list[0].askForCard()
-   # game.askAnotherPlayer(game.player_list[0],save_card)
-   # print(game.player_list[0].name, game.player_list[0].player_hand)
-   # print(game.player_list[1].name, game.player_list[1].player_hand)
-   # bol_check = game.checkRequest(game.player_list[0], game.player_list[1], save_card)
-   # print(bol_check)
    pass 
     
