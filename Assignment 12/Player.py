@@ -4,7 +4,7 @@ import Deck as Deck_library
 import sys
 
 class Player:
-   
+
     @property # allows us to access the method like it's a property
     def name(self):
         return self._name
@@ -45,29 +45,30 @@ class Player:
         self._player_hand = Hand_library.Hand()
 
     def askForCard(self):
-        # print out their hand so that they know what options are available to them
-        # They can only ask for a card if they have at least one of that value card
+        VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         while True:
             print(self.player_hand)
-            askplayer_card = input("Which card would you like to ask for? [card value]: ") # string
-            if askplayer_card == "Quit" or askplayer_card == "quit":
-                sys.exit(0)
-            try:  
-                value_card, suit_card = askplayer_card.split(' of ')
-                if value_card.isalpha():
-                    value_card = value_card[0].upper()
-                if suit_card[0].lower() == 'h' or suit_card == '♡':
-                    ask_card = Card_library.Card(value_card, '♡')
-                elif suit_card[0].lower() == 's' or suit_card == '♤':
-                    ask_card = Card_library.Card(value_card, '♤')
-                elif suit_card[0].lower() == 'c' or suit_card == '♧':
-                    ask_card = Card_library.Card(value_card, '♧')
-                elif suit_card[0].lower() == 'd' or suit_card == '♢':
-                    ask_card = Card_library.Card(value_card, '♢')
+            value_card = input("Which card value you like to ask for? [card value]: ") # string
+            if value_card == "Quit" or value_card == "quit":
+                sys.exit(0)  
+                # if value_card.isalpha():
+                #     value_card = value_card[0].upper()
+                # if suit_card[0].lower() == 'h' or suit_card == '♡':
+                #     ask_card = Card_library.Card(value_card, '♡')
+                # elif suit_card[0].lower() == 's' or suit_card == '♤':
+                #     ask_card = Card_library.Card(value_card, '♤')
+                # elif suit_card[0].lower() == 'c' or suit_card == '♧':
+                #     ask_card = Card_library.Card(value_card, '♧')
+                # elif suit_card[0].lower() == 'd' or suit_card == '♢':
+                #     ask_card = Card_library.Card(value_card, '♢')
+            value_card = value_card.upper()
+            if value_card in VALUE:
+                ask_card = Card_library.Card(value_card, '♡')
                 return ask_card
-            except:
-                print('\nInvalid card. Try Again')
-                print('Ex: A of ♧ or A of spade')
+            else:
+                print("\nInvalid card value. Please try again.\n")
+                print("Please enter a character. Ex: For Ace, enter \'A\'.")
+            
               
         # if askplayer_card in self.player_hand:
         #     if askplayer_card in askplayer_player.player_hand:
@@ -83,6 +84,4 @@ class Player:
 
 
 if __name__ == "__main__":
-    p = Player('player 1')
-    p.score = 4
-    p.askForCard()
+    pass
