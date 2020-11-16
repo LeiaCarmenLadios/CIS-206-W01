@@ -49,3 +49,10 @@ We are constantly updating our UML diagram and we have found it useful as the pr
 We came into some problems when it came to naming different attributes. We noticed that we had named some attributes and variables the same name and that confused us.
 
 We will start implementing more descriptive naming conventions.
+
+## Assignment 13
+This week, we started working on a GUI implementation of the text based Go Fish Game. 
+
+This was our first time working with Tkinter to create a GUI. We were able to create some basic frames containing buttons, labels, menus and text windows.
+
+With some Tkinter basics under our belt, we plan to start incorporating elements of our text based game into GUI form.
