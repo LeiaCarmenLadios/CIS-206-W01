@@ -12,7 +12,15 @@ class Deck:
         self._deck_of_cards = []
         for s in SUIT:
             for v in VALUE:
-                crd = Card_library.Card(v, s)
+                if s == '♧':
+                    card_file = v + 'C' + '.svg'
+                elif s == '♢':
+                    card_file = v + 'D' + '.svg'
+                elif s == '♡':
+                    card_file = v + 'H' + '.svg'
+                elif s == '♤':
+                    card_file = v + 'S' + '.svg'
+                crd = Card_library.Card(v, s, card_file)
                 self._deck_of_cards.append(crd)
 
     def __str__(self):
@@ -34,14 +42,12 @@ class Deck:
         self.__init__()
 
 
-# if __name__ == "__main__":
-#     obj = Deck()
-#     print(obj)
-#     print("\n")
-#     obj.shuffle()
-#     print(obj)
-#     for c in obj.deck_of_cards:
-#         print(c.card_suit + c.card_value)
-#     obj.reset()
-#     for c in obj.deck_of_cards:
-#         print(c.card_suit + c.card_value)
+if __name__ == "__main__":
+    obj = Deck()
+    print(obj)
+    for card in obj.deck_of_cards:
+        print("Card Value & Suit: " , card.card_value + card.card_suit)
+        print("Card File Name: " , card.card_file, '\n')
+
+
+   
