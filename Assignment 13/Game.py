@@ -16,10 +16,19 @@ class Game:
       def finished_players(self):
          return self._finished_players
 
+      @property 
+      def num_of_players(self):
+         return self._num_of_players
+
+      @num_of_players.setter
+      def num_of_players(self, num):
+         self._num_of_players = num
+
       def __init__(self):
          self._game_deck = Deck_library.Deck()
          self._player_list = []
          self._finished_players = []
+         self.num_of_players = 0
       
       def addPlayers(self, playerName):
          player_to_add = Player_library.Player(playerName)
@@ -111,3 +120,5 @@ class Game:
 if __name__ == "__main__":
    pass 
     
+    
+            
