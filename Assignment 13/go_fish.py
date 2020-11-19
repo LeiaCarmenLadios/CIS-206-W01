@@ -3,7 +3,7 @@ import Deck as Deck_library
 import Hand as Hand_library
 import Player as Player_library
 import Game as Game_library
-
+import gui_go_fish as gui
 
 if __name__ == "__main__":
        
@@ -13,16 +13,16 @@ if __name__ == "__main__":
          print("\n\n\tWelcome to the game of GO FISH!!!")
          print("Type \'Quit\' when asked to enter a card to exit.")
          print("\nHow many players will be playing? (minimum 2; maximum 5): ")
-         num_of_players = int(input())
+         game.num_of_players = int(input())
          print()
-         if num_of_players < 2:
+         if game.num_of_players < 2:
             print("You need more than 1 player.")
-         elif num_of_players > 5:
+         elif game.num_of_players > 5:
             print("You have entered more than the maximum(5) number of players.")
          else:
             break 
       
-      for _ in range(num_of_players):   
+      for _ in range(game.num_of_players):   
          print("Please enter the name of a player:")
          name = input()
          game.addPlayers(name)  
@@ -105,3 +105,4 @@ if __name__ == "__main__":
    # print(game.player_list[1].name, game.player_list[1].player_hand)
    # bol_check = game.checkRequest(game.player_list[0], game.player_list[1], save_card)
    # print(bol_check)
+
