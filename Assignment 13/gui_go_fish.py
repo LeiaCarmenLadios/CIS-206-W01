@@ -41,52 +41,60 @@ class FileMenu(tk.Menu):
 class Canvas(tk.Canvas):
     """Creates drawing canvas."""
 
-    images = []
-
     def __init__(self, root, *args, **kwargs):
         tk.Canvas.__init__(self, root, *args, **kwargs)
-
         self.pack(fill="both", expand=True)
+        self.game = Game_library.Game()
         self.display_start_page()
+  
+    def askNumPlayers(self):
+        intro_msg = self.create_text(580, 300, font = ("Purisa", 12),
+        text = """
+        \t    Welcome to the game of GO FISH!!!\n
+        # How many players will be playing? (minimum 2; maximum 5): """)
+        global num_of_players
+        num_of_players= tk.IntVar()
+        enter_num = tk.Entry(self, textvariable = num_of_players)
+        enter_num.place(x=390, y =350, width = 200)
+        
+        submitNumPlayers_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.clear_canvas(), self.askPlayerNames(num_of_players), submitNumPlayers_button.destroy(), enter_num.destroy()])
+        submitNumPlayers_button.pack(side="top")
+        submitNumPlayers_button.place(x=400, y =370)
+
+
+    def askPlayerNames(self, num):
        
-    #     self.bind("<Button-1>", self.on_click)
-    #     self.bind("<B1-Motion>", self.on_drag)
+        self.game.num_of_players = num.get()
+        print(self.game.num_of_players)
+
+        if self.game.num_of_players < 2:
+            self.clear_canvas()
+            playerName_msg = self.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="You have entered less than the minimum(2) number of players.")
+            self.askNumPlayers()
+        
+        elif self.game.num_of_players > 5:
+            self.clear_canvas()
+            playerName_msg = self.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="You have entered more than the maximum(5) number of players.")
+            self.askNumPlayers()
+        
+        
 
         
 
-    #     self.create_text(450, 50, font=("Purisa", 24), text="tkinter Canvas Drawing Examples")
-
-    #     self.create_line(175, 150, 275, 150, width=3, fill='darkred')
-    #     self.create_rectangle(325, 100, 425, 200, outline='gold', fill='gold')
-    #     self.create_oval(475, 100, 575, 200, outline='darkgreen', fill='darkgreen')
-    #     self.create_polygon(675, 100, 625, 200, 725, 200, outline='darkblue', fill='darkblue')
-
-    #     self.create_text(450, 510, font=("Purisa", 24), text="drag mouse to draw")
-
-    # def add_image(self, url, x, y, tags=None):
-    #     """Adds image from URL to canvas at coordinates(x, y)."""
-    #     response = urllib.request.urlopen(url)
-    #     image = PIL.Image.open(response)
-    #     photoimage = PIL.ImageTk.PhotoImage(image)
-    #     canvas.create_image(x, y, anchor=tk.NW, image=photoimage, tags=tags)
-    #     self.images.append(photoimage)
-
-    # def on_click(self, event):
-    #     self.create_oval(event.x - 5, event.y - 5, event.x + 5, event.y + 5, outline='black', fill='black')
-
-    # def on_drag(self, event):
-    #     self.create_oval(event.x - 5, event.y - 5, event.x + 5, event.y + 5, outline='black', fill='black')
-    def start_game(self):
-        self.clear_canvas()
-        game = Game_library.Game()
-    
     def display_start_page(self):
-        startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.start_game(), startGame_button.destroy(), gameRules_button.destroy()])
+        startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
         startGame_button.pack()
-        gameRules_button = tk.Button(self, text ="Game Rules", bg="light cyan", command =lambda:[self.display_game_rules(), gameRules_button.destroy(), startGame_button.destroy()] )
+        gameRules_button = tk.Button(self, text ="Game Rules", bg="light cyan", command =lambda:[self.clear_canvas(), self.display_game_rules(), gameRules_button.destroy(), startGame_button.destroy()] )
         gameRules_button.pack(side="top")
         
-       
+    
+    def clear_canvas(self):
+        self.delete("all")
+        
+        
+    def retrieve_canvas(self):
+        self.clear_canvas()
+
     def display_game_rules(self):
         self.create_text(580, 350, font=("Purisa", 12), 
         text=  """
@@ -128,15 +136,6 @@ class Canvas(tk.Canvas):
 
         back_button = tk.Button(self, text = "Back", bg="light cyan", command = lambda:[self.retrieve_canvas(), back_button.destroy(), self.display_start_page()])
         back_button.pack()
-        
-    
-    def clear_canvas(self):
-        self.delete("all")
-        
-        
-    def retrieve_canvas(self):
-        self.clear_canvas()
-
         
         
         
