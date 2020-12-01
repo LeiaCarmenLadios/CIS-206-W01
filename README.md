@@ -58,3 +58,8 @@ This was our first time working with Tkinter to create a GUI. We were able to cr
 With some Tkinter basics under our belt, we plan to start incorporating elements of our text based game into GUI form.
 
 We have also picked out the card design that we want to use and draw onto the Canvas. We have put it inside a file called Cards inside the Assignment 13 folder.
+
+## Assignment 14
+This week, we continued to work on the game introduction which included displaying game rules, and initializing the number of players and their names.
+
+We are now starting to work on the card game portion itself and deciding on our design for the player canvas.
