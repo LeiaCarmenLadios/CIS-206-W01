@@ -5,7 +5,10 @@ import Deck as Deck_library
 import Hand as Hand_library
 import Player as Player_library
 import Game as Game_library
+import PIL.Image
+import PIL.ImageTk
 
+# Clipart Personal Use License: http://clipart-library.com/clipart/1131099.htm
 
 class Root(tk.Tk):
     """Creates root window."""
@@ -28,14 +31,19 @@ class FileMenu(tk.Menu):
     """Creates File menu."""
     def __init__(self, root, *args, **kwargs):
         tk.Menu.__init__(self, root, *args, **kwargs)
-        self.add_command(label="New Game", command=self.new_game)
+        self.add_command(label="New Game", command= lambda:[self.new_game(root)])
         self.add_command(label="Exit", command=root.quit)
 
-    def new_game(self):
-        game = Game_library.Game()
+    def new_game(self,rt):
+        root = Root()
+        newMain = MainMenu(root)
+        newCanvas = Canvas(root)
+        rt.destroy()
+        playerName_msg2 = newCanvas.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="TEST TEST TEST")
         
+       
 
-class GameStartCanvas(tk.Canvas):
+class Canvas(tk.Canvas):
     """Creates drawing canvas."""
 
     def __init__(self, root, *args, **kwargs):
@@ -53,11 +61,13 @@ class GameStartCanvas(tk.Canvas):
         num_of_players= tk.IntVar()
         enter_num = tk.Entry(self, textvariable = num_of_players)
         enter_num.place(x=390, y =350, width = 200)
-
+        # enter_num.grid(row = 0, column = 0, padx = 10, pady = 5)
         
         submitNumPlayers_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.clear_canvas(), self.validateNumPlayers(num_of_players), submitNumPlayers_button.destroy(), enter_num.destroy()])
         submitNumPlayers_button.pack(side="top")
         submitNumPlayers_button.place(x=400, y =370)
+        # submitNumPlayers_button.grid(row = 0, column = 1, padx = 10, pady = 5)
+
 
     def validateNumPlayers(self, num):
         self.game.num_of_players = num.get()
@@ -84,12 +94,12 @@ class GameStartCanvas(tk.Canvas):
 
         for x in range(self.game.num_of_players):
             enter_name = tk.Entry(self)
-            enter_name.grid(row= x, column = 0, pady = 20, padx = 5)
+            enter_name.grid(row = x, column = 0, padx = 525, pady =5)
             entered_names.append(enter_name)
            
 
-        submitPlayerName_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.printPlayerTest(entered_names), submitPlayerName_button.destroy()])
-        submitPlayerName_button.grid(row = 0, column = 1, pady =  20, padx =5)
+        submitPlayerName_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.assignPlayerName(entered_names), submitPlayerName_button.destroy()])
+        submitPlayerName_button.grid(row = self.game.num_of_players, column = 0, pady =  20, padx =50)
         
   
         # for _ in range(self.game.num_of_players):
@@ -100,25 +110,47 @@ class GameStartCanvas(tk.Canvas):
         #    
             # submitPlayerName_button.wait_variable(playerNameGiven.get())
             
-    # def startGame(self):
-    #     self.clear_canvas()
-    #     self.game.deal()
-    #     i = 0
+    def displayCards(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
+        self.game.deal()
+        i = 0
+        pathBuilder3 = "CIS-143-W01\\Assignment 12\\Cards2\\Go Fish.gif" #+ self.game.player_list[i].player_hand.hand_cards[0].card_file
+        self.gofish = tk.PhotoImage(file = pathBuilder3)
+        self.gofish = self.gofish.subsample(3,3)
+        self.create_image(955,0, anchor=tk.NW, image = self.gofish)
+        
+        while (i < self.game.num_of_players):
+            print(self.game.player_list[0].player_hand.hand_cards[0].card_file)
+            print(self.game.player_list[1].player_hand.hand_cards[0].card_file)
+            # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
+            # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
+            pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[i].player_hand.hand_cards[0].card_file
+            self.svgFile = tk.PhotoImage(file = pathBuilder)
+            self.svgFile = self.svgFile.subsample(3,3)
+            self.create_image(20,20, anchor=tk.NW, image = self.svgFile)
 
-    #     while (i < self.game.num_of_players):
-    #         print(self.game.player_list(i).player_hand(0))
-    #         playerHand_msg = self.create_text(580, 250, font = ("Purisa", 12), text="please work" )
-    #         i += 1
-    
+            pathBuilder2 = "CIS-143-W01\\Assignment 12\\Cards2\\" + self.game.player_list[i].player_hand.hand_cards[0].card_file
+            self.svgFile2 = tk.PhotoImage(file = pathBuilder2)
+            self.svgFile2 = self.svgFile2.subsample(3,3)
+            self.create_image(70,20, anchor=tk.NW, image = self.svgFile2)
+            i += 1
 
-    def printPlayerTest(self, playerNames):
+       
+    #CIS-143-W01\Assignment 12\Cards\2C.svg
+
+    def assignPlayerName(self, playerNames):
         for x in playerNames:
             self.game.addPlayers(x.get())
+
+        for entryBox in self.grid_slaves():
+            entryBox.grid_forget()
+
         print(self.game.print_player_list())
-        self.grid_remove()
+        self.clear_canvas()
+        self.grid_forget()
+        self.displayCards()
+       
     
         
-
     def display_start_page(self):
         startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
         startGame_button.pack()
@@ -173,8 +205,7 @@ class GameStartCanvas(tk.Canvas):
         back_button = tk.Button(self, text = "Back", bg="light cyan", command = lambda:[self.retrieve_canvas(), back_button.destroy(), self.display_start_page()])
         back_button.pack()
         
-#    class GameCanvas(tk.Canvas):     
-        
+
         
         
 
@@ -263,6 +294,7 @@ class GameStartCanvas(tk.Canvas):
 if __name__ == "__main__":
     root = Root()
     menu = MainMenu(root)
-    canvas = GameStartCanvas(root, bg = 'alice blue')
-       
+    canvas = Canvas(root, bg = 'alice blue')
+    
+
     root.mainloop()
