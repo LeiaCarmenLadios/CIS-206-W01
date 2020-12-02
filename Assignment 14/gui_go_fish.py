@@ -8,7 +8,7 @@ import Game as Game_library
 import PIL.Image
 import PIL.ImageTk
 
-# Clipart Personal Use License: http://clipart-library.com/clipart/1131099.htm
+# Clipart Personal Use License: http://clipart-library.com/clipart/1142297.htm
 
 class Root(tk.Tk):
     """Creates root window."""
@@ -112,12 +112,12 @@ class Canvas(tk.Canvas):
             
     def displayCards(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
         self.game.deal()
-        i = 0
         pathBuilder3 = "CIS-143-W01\\Assignment 12\\Cards2\\Go Fish.gif" #+ self.game.player_list[i].player_hand.hand_cards[0].card_file
         self.gofish = tk.PhotoImage(file = pathBuilder3)
         self.gofish = self.gofish.subsample(3,3)
-        self.create_image(955,0, anchor=tk.NW, image = self.gofish)
+        self.create_image(957,0, anchor=tk.NW, image = self.gofish)
         
+        i = 0
         while (i < self.game.num_of_players):
             print(self.game.player_list[0].player_hand.hand_cards[0].card_file)
             print(self.game.player_list[1].player_hand.hand_cards[0].card_file)
