@@ -13,13 +13,13 @@ class Deck:
         for s in SUIT:
             for v in VALUE:
                 if s == '♧':
-                    card_file = v + 'C' + '.svg'
+                    card_file = v + 'C' + '.gif'
                 elif s == '♢':
-                    card_file = v + 'D' + '.svg'
+                    card_file = v + 'D' + '.gif'
                 elif s == '♡':
-                    card_file = v + 'H' + '.svg'
+                    card_file = v + 'H' + '.gif'
                 elif s == '♤':
-                    card_file = v + 'S' + '.svg'
+                    card_file = v + 'S' + '.gif'
                 crd = Card_library.Card(v, s, card_file)
                 self._deck_of_cards.append(crd)
 
