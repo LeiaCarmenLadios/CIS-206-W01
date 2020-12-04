@@ -8,7 +8,9 @@ import Game as Game_library
 import PIL.Image
 import PIL.ImageTk
 
-# Clipart Personal Use License: http://clipart-library.com/clipart/1142297.htm
+    # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
+    # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
+
 
 class Root(tk.Tk):
     """Creates root window."""
@@ -82,24 +84,30 @@ class Canvas(tk.Canvas):
             self.askNumPlayers()
         else:
             self.get_names()
-                # if i == self.game.num_of_players:
-                #     enter_name.destroy()
-                #     submitPlayerName_button.destroy()
-                #     break
-            #self.startGame()
+                
     def get_names(self):
         entered_names = []
-        playerNameAsk_msg = self.create_text(580, 250, font = ("Purisa", 12), text="Please enter player names: ")
+        
+        # playerNameAsk_msg = self.create_text(580, 250, font = ("Purisa", 12), text="Please enter player names: ")
+        decoyLabel = tk.Label(self, text ="", pady = 120, bg = 'alice blue')
+        decoyLabel.grid(row=0, column =0)
+
+        playerNameAsk_msg = tk.Label(self, text = "Please enter player names: ", bg = 'alice blue')
+        playerNameAsk_msg.grid(row = 1, column = 0)
         playerNameGiven = tk.StringVar()
 
+       
         for x in range(self.game.num_of_players):
             enter_name = tk.Entry(self)
-            enter_name.grid(row = x, column = 0, padx = 525, pady =5)
+            # self.grid_rowconfigure(1, weight=2)
+            # self.grid(row = 30, column = 9)
+            enter_name.grid(row = x + 2, column = 0, padx = 525, pady = 10)
             entered_names.append(enter_name)
+            
            
 
         submitPlayerName_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.assignPlayerName(entered_names), submitPlayerName_button.destroy()])
-        submitPlayerName_button.grid(row = self.game.num_of_players, column = 0, pady =  20, padx =50)
+        submitPlayerName_button.grid(row = self.game.num_of_players + 5, column = 0, pady =  20, padx =50)
         
   
         # for _ in range(self.game.num_of_players):
@@ -111,31 +119,38 @@ class Canvas(tk.Canvas):
             # submitPlayerName_button.wait_variable(playerNameGiven.get())
             
     def displayCards(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
-        self.game.deal()
-        pathBuilder3 = "CIS-143-W01\\Assignment 12\\Cards2\\Go Fish.gif" #+ self.game.player_list[i].player_hand.hand_cards[0].card_file
-        self.gofish = tk.PhotoImage(file = pathBuilder3)
-        self.gofish = self.gofish.subsample(3,3)
-        self.create_image(957,0, anchor=tk.NW, image = self.gofish)
-        
-        i = 0
-        while (i < self.game.num_of_players):
-            print(self.game.player_list[0].player_hand.hand_cards[0].card_file)
-            print(self.game.player_list[1].player_hand.hand_cards[0].card_file)
-            # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
-            # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
-            pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[i].player_hand.hand_cards[0].card_file
-            self.svgFile = tk.PhotoImage(file = pathBuilder)
-            self.svgFile = self.svgFile.subsample(3,3)
-            self.create_image(20,20, anchor=tk.NW, image = self.svgFile)
+        self.game.deal()    
 
-            pathBuilder2 = "CIS-143-W01\\Assignment 12\\Cards2\\" + self.game.player_list[i].player_hand.hand_cards[0].card_file
-            self.svgFile2 = tk.PhotoImage(file = pathBuilder2)
-            self.svgFile2 = self.svgFile2.subsample(3,3)
-            self.create_image(70,20, anchor=tk.NW, image = self.svgFile2)
-            i += 1
+        j = 0
+        images = []
+        card_indent = 20
+        while(j < len(self.game.player_list)):
+            i = 0
+            while (i < len(self.game.player_list[j].player_hand.hand_cards)):
+                
+                print(self.game.player_list[j].player_hand.hand_cards[i].card_file)
+                # pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file
+                self.svgFile = tk.PhotoImage(file = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file)
+                self.svgFile = self.svgFile.subsample(3,3)
+                self.create_image(card_indent , card_indent, anchor=tk.NW, image = self.svgFile)
+                images.append(self.svgFile)
+                card_indent +=50
 
-       
-    #CIS-143-W01\Assignment 12\Cards\2C.svg
+                # pathBuilder2 = "CIS-143-W01\\Assignment 12\\Cards2\\" + self.game.player_list[0].player_hand.hand_cards[1].card_file
+                # self.svgFile2 = tk.PhotoImage(file = pathBuilder2)
+                # self.svgFile2 = self.svgFile2.subsample(3,3)
+                # self.create_image(70,20, anchor=tk.NW, image = self.svgFile2)
+                i += 1
+            j += 1
+    
+            
+
+    # def add_image(self, player_index, hand_index, card_indent):
+
+    #     pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[player_index].player_hand.hand_cards[hand_index].card_file
+    #     self.svgFile = tk.PhotoImage(file = pathBuilder)
+    #     self.svgFile = self.svgFile.subsample(3,3)
+    #     self.create_image(card_indent, 20, anchor=tk.NW, image = self.svgFile)
 
     def assignPlayerName(self, playerNames):
         for x in playerNames:
@@ -149,8 +164,6 @@ class Canvas(tk.Canvas):
         self.grid_forget()
         self.displayCards()
        
-    
-        
     def display_start_page(self):
         startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
         startGame_button.pack()
