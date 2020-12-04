@@ -130,7 +130,7 @@ class Canvas(tk.Canvas):
                 
                 print(self.game.player_list[j].player_hand.hand_cards[i].card_file)
                 # pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file
-                self.svgFile = tk.PhotoImage(file = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file)
+                self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file)
                 self.svgFile = self.svgFile.subsample(3,3)
                 self.create_image(card_indent , card_indent, anchor=tk.NW, image = self.svgFile)
                 images.append(self.svgFile)
