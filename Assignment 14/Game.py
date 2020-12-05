@@ -19,12 +19,17 @@ class Game:
       @property 
       def num_of_players(self):
          return self._num_of_players
+      
+      @property
+      def current_player(self):
+         return self._current_player
 
       @num_of_players.setter
       def num_of_players(self, num):
          self._num_of_players = num
 
       def __init__(self):
+         self._current_player = Player_library.Player()
          self._game_deck = Deck_library.Deck()
          self._player_list = []
          self._finished_players = []
@@ -33,6 +38,7 @@ class Game:
       def addPlayers(self, playerName):
          player_to_add = Player_library.Player(playerName)
          self.player_list.append(player_to_add)
+         self._current_player = self.player_list[0]
 
       def print_player_list(self):
          name_list = 'Players: ('
@@ -49,7 +55,7 @@ class Game:
             for player in self.player_list:
                card_deal = self.game_deck.deck_of_cards[len(self.game_deck.deck_of_cards)-1]
                self.game_deck.draw()
-               player.player_hand.addToHand(card_deal.card_value, card_deal.card_suit)
+               player.player_hand.addToHand(card_deal.card_value, card_deal.card_suit, card_deal.card_file)
             counter -= 1
 
       def checkFour(self, player):
@@ -88,6 +94,7 @@ class Game:
             player.player_hand.removeFromHand(ix)
 
       def checkRequest(self, current_player, player_asked, card):
+         self._current_player = current_player
          is_found = False
          suits_to_transfer = []
          for crd in player_asked.player_hand.hand_cards:
@@ -96,7 +103,8 @@ class Game:
                is_found = True
          for suit in suits_to_transfer:
             player_asked.player_hand.removeFromHand(card.card_value)
-            current_player.player_hand.addToHand(card.card_value, suit)
+            file_string = card.card_value + suit + ".gif"
+            current_player.player_hand.addToHand(card.card_value, suit, file_string)
          return is_found
 
 

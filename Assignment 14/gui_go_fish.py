@@ -47,12 +47,14 @@ class FileMenu(tk.Menu):
 
 class Canvas(tk.Canvas):
     """Creates drawing canvas."""
-
+    
+    
     def __init__(self, root, *args, **kwargs):
         tk.Canvas.__init__(self, root, *args, **kwargs)
         self.pack(fill="both", expand=True)
         self.game = Game_library.Game()
         self.display_start_page()
+        self.images = []
   
     def askNumPlayers(self):
         intro_msg = self.create_text(580, 300, font = ("Purisa", 12),
@@ -118,32 +120,69 @@ class Canvas(tk.Canvas):
         #    
             # submitPlayerName_button.wait_variable(playerNameGiven.get())
             
-    def displayCards(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
+    def displayTurn(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
         self.game.deal()    
+       
+        # j = 0
+        card_indent = 410
+        display_currentPlayer = self.create_text(420, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
+        display_currentPlayerScore = self.create_text(620, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
+       
+        i = 0
+        while (i < len(self.game.current_player.player_hand.hand_cards)):
+            print(self.game.current_player.player_hand.hand_cards[i].card_file)
+            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
+            self.svgFile = self.svgFile.subsample(2,2)
+            self.create_image(card_indent , 300, anchor=tk.NW, image = self.svgFile)
+            self.images.append(self.svgFile)
+            card_indent +=50
+            i += 1
+        
+        display_askOtherPlayerName = tk.Label(self, font = ("Purisa", 18), text ="Who would you like to ask for a card?", pady = 0, bg = 'alice blue')
+        display_askOtherPlayerName.place(relx = 0.33, rely = 0.72)
 
-        j = 0
-        images = []
-        card_indent = 20
-        while(j < len(self.game.player_list)):
-            i = 0
-            while (i < len(self.game.player_list[j].player_hand.hand_cards)):
-                
-                print(self.game.player_list[j].player_hand.hand_cards[i].card_file)
-                # pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file
-                self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\"+ self.game.player_list[j].player_hand.hand_cards[i].card_file)
-                self.svgFile = self.svgFile.subsample(3,3)
-                self.create_image(card_indent , card_indent, anchor=tk.NW, image = self.svgFile)
-                images.append(self.svgFile)
-                card_indent +=50
+        askPlayerButtonNames = []
+        for player in self.game.player_list:
+            if player.name not in self.game.current_player.name:
+                askPlayerButtonNames.append(player.name)
 
-                # pathBuilder2 = "CIS-143-W01\\Assignment 12\\Cards2\\" + self.game.player_list[0].player_hand.hand_cards[1].card_file
-                # self.svgFile2 = tk.PhotoImage(file = pathBuilder2)
-                # self.svgFile2 = self.svgFile2.subsample(3,3)
-                # self.create_image(70,20, anchor=tk.NW, image = self.svgFile2)
-                i += 1
-            j += 1
-    
+        button_indent = 0.08
+        button_refs = []
+        for name in askPlayerButtonNames:
+            button_indent += 0.2
+            askPlayer_button = tk.Button(self, text = name, bg="light cyan", command = lambda:[self.askPlayerForCard(name), display_askOtherPlayerName.destroy(), self.remove_buttons(button_refs)])
+            askPlayer_button.place(relx = button_indent, rely = 0.8)
+            button_refs.append(askPlayer_button)
             
+
+    def remove_buttons(self, button_list):
+        for button in button_list:
+            button.destroy()
+            
+    def askPlayerForCard(self, askedPlayerName):
+        askedPlayer = Player_library.Player()
+        
+        for player in self.game.player_list:
+            if askedPlayerName in player.name:
+                askedPlayer = player
+
+        display_askOtherPlayerCard = self.create_text(575, 600, font = ("Purisa", 18), fill = "black", text= "Which card would you like to ask for?")
+            
+        button_indent = 0.05
+        button_refs = []
+        existing_values = []
+        for card in self.game.current_player.player_hand.hand_cards:
+            if card.card_value not in existing_values:
+                existing_values.append(card.card_value)
+
+        for value in existing_values:
+            button_indent += 0.16
+            askCardValue_button = tk.Button(self, text = value, bg="light cyan", command = lambda:[self.game.checkRequest(self.game.current_player, askedPlayer, crd), self.remove_buttons(button_refs)])
+            buttonValue = askCardValue_button['text']
+            crd = Card_library.Card(buttonValue, '♡')
+            askCardValue_button.place(relx = button_indent, rely = 0.8)
+            button_refs.append(askCardValue_button)
+    
 
     # def add_image(self, player_index, hand_index, card_indent):
 
@@ -162,13 +201,13 @@ class Canvas(tk.Canvas):
         print(self.game.print_player_list())
         self.clear_canvas()
         self.grid_forget()
-        self.displayCards()
+        self.displayTurn()
        
     def display_start_page(self):
         startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
         startGame_button.pack()
         gameRules_button = tk.Button(self, text ="Game Rules", bg="light cyan", command =lambda:[self.clear_canvas(), self.display_game_rules(), gameRules_button.destroy(), startGame_button.destroy()] )
-        gameRules_button.pack(side="top")
+        gameRules_button.pack()
         
     def clear_canvas(self):
         self.delete("all")
