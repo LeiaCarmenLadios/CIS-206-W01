@@ -29,7 +29,6 @@ class MainMenu(tk.Menu):
         self.add_cascade(label="File", menu = file_menu)
         root.config(menu = self)
 
-
 class FileMenu(tk.Menu):
     """Creates File menu."""
     def __init__(self, root, *args, **kwargs):
@@ -58,25 +57,31 @@ class Canvas(tk.Canvas):
         self.images = []
   
     def askNumPlayers(self):
-        intro_msg = self.create_text(580, 300, font = ("Purisa", 12),
-        text = """
-        \t    Welcome to the game of GO FISH!!!\n
-        # How many players will be playing? (minimum 2; maximum 5): """)
-        global num_of_players
-        num_of_players= tk.IntVar()
-        enter_num = tk.Entry(self, textvariable = num_of_players)
-        enter_num.place(x=390, y =350, width = 200)
-        # enter_num.grid(row = 0, column = 0, padx = 10, pady = 5)
-        
-        submitNumPlayers_button = tk.Button(self, text ="Submit", bg="light cyan", command = lambda:[self.clear_canvas(), self.validateNumPlayers(num_of_players), submitNumPlayers_button.destroy(), enter_num.destroy()])
-        submitNumPlayers_button.pack(side="top")
-        submitNumPlayers_button.place(x=400, y =370)
-        # submitNumPlayers_button.grid(row = 0, column = 1, padx = 10, pady = 5)
-
-
-    def validateNumPlayers(self, num):
-        self.game.num_of_players = num.get()
        
+        intro_msg = self.create_text(580, 300, font = ("Purisa", 18),
+        text = """
+        \t        Welcome to the game of GO FISH!!!\n
+        # How many players will be playing? (minimum 2; maximum 5): """)
+        global num_of_players 
+
+        num_of_players= tk.IntVar()
+        enter_num = tk.Entry(self, textvariable = num_of_players, font = ("Purisa", 13))
+        enter_num.place(x=450, y =365, width = 200)
+      
+
+        submitNumPlayers_button = tk.Button(self, text ="Submit",  font = ("Purisa", 12), bg="light cyan", command = partial(self.validateNumPlayers, num_of_players, enter_num))
+        
+        submitNumPlayers_button.pack(side="top")
+        submitNumPlayers_button.place(x=655, y =360)
+        
+
+    def validateNumPlayers(self, num, entrybox, button):
+        
+        self.clear_canvas()
+        self.game.num_of_players = num.get()
+        button.place_forget()
+        entrybox.place_forget()
+        
         if self.game.num_of_players < 2:
             self.clear_canvas()
             playerName_msg = self.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="You have entered less than the minimum(2) number of players.")
@@ -205,9 +210,9 @@ class Canvas(tk.Canvas):
         self.displayTurn()
        
     def display_start_page(self):
-        startGame_button = tk.Button(self, text ="Start Game", bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
-        startGame_button.pack()
-        gameRules_button = tk.Button(self, text ="Game Rules", bg="light cyan", command =lambda:[self.clear_canvas(), self.display_game_rules(), gameRules_button.destroy(), startGame_button.destroy()] )
+        startGame_button = tk.Button(self, text ="Start Game", font = ("Purisa", 14), bg="light cyan", command =lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()])
+        startGame_button.pack(pady = (300, 20))
+        gameRules_button = tk.Button(self, text ="Game Rules", font = ("Purisa", 14), bg="light cyan", command =lambda:[self.clear_canvas(), self.display_game_rules(), gameRules_button.destroy(), startGame_button.destroy()] )
         gameRules_button.pack()
         
     def clear_canvas(self):
