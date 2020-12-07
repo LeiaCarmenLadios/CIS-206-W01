@@ -5,8 +5,9 @@ import Deck as Deck_library
 import Hand as Hand_library
 import Player as Player_library
 import Game as Game_library
-import PIL.Image
-import PIL.ImageTk
+from functools import partial
+# import PIL.Image
+# import PIL.ImageTk
 
     # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
     # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
@@ -33,7 +34,8 @@ class FileMenu(tk.Menu):
     """Creates File menu."""
     def __init__(self, root, *args, **kwargs):
         tk.Menu.__init__(self, root, *args, **kwargs)
-        self.add_command(label="New Game", command= lambda:[self.new_game(root)])
+        make_new_game = partial(self.new_game, root)
+        self.add_command(label="New Game", command= make_new_game)
         self.add_command(label="Exit", command=root.quit)
 
     def new_game(self,rt):
@@ -41,7 +43,6 @@ class FileMenu(tk.Menu):
         newMain = MainMenu(root)
         newCanvas = Canvas(root)
         rt.destroy()
-        playerName_msg2 = newCanvas.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="TEST TEST TEST")
         
        
 
@@ -94,13 +95,13 @@ class Canvas(tk.Canvas):
         decoyLabel = tk.Label(self, text ="", pady = 120, bg = 'alice blue')
         decoyLabel.grid(row=0, column =0)
 
-        playerNameAsk_msg = tk.Label(self, text = "Please enter player names: ", bg = 'alice blue')
+        playerNameAsk_msg = tk.Label(self, font = ("Purisa", 12), text = "Please enter player names: ", bg = 'alice blue')
         playerNameAsk_msg.grid(row = 1, column = 0)
         playerNameGiven = tk.StringVar()
 
        
         for x in range(self.game.num_of_players):
-            enter_name = tk.Entry(self)
+            enter_name = tk.Entry(self, font = ("Purisa", 12))
             # self.grid_rowconfigure(1, weight=2)
             # self.grid(row = 30, column = 9)
             enter_name.grid(row = x + 2, column = 0, padx = 525, pady = 10)
@@ -124,14 +125,14 @@ class Canvas(tk.Canvas):
         self.game.deal()    
        
         # j = 0
-        card_indent = 410
-        display_currentPlayer = self.create_text(420, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
-        display_currentPlayerScore = self.create_text(620, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
+        card_indent = 425
+        display_currentPlayer = self.create_text(460, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
+        display_currentPlayerScore = self.create_text(660, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
        
         i = 0
         while (i < len(self.game.current_player.player_hand.hand_cards)):
             print(self.game.current_player.player_hand.hand_cards[i].card_file)
-            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
+            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
             self.svgFile = self.svgFile.subsample(2,2)
             self.create_image(card_indent , 300, anchor=tk.NW, image = self.svgFile)
             self.images.append(self.svgFile)
@@ -139,7 +140,7 @@ class Canvas(tk.Canvas):
             i += 1
         
         display_askOtherPlayerName = tk.Label(self, font = ("Purisa", 18), text ="Who would you like to ask for a card?", pady = 0, bg = 'alice blue')
-        display_askOtherPlayerName.place(relx = 0.33, rely = 0.72)
+        display_askOtherPlayerName.place(relx = 0.31, rely = 0.72)
 
         askPlayerButtonNames = []
         for player in self.game.player_list:
