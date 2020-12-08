@@ -69,8 +69,8 @@ class Canvas(tk.Canvas):
         enter_num.place(x=450, y =365, width = 200)
       
 
-        submitNumPlayers_button = tk.Button(self, text ="Submit",  font = ("Purisa", 12), bg="light cyan", command = partial(self.validateNumPlayers, num_of_players, enter_num))
-        
+        submitNumPlayers_button = tk.Button(self, text ="Submit",  font = ("Purisa", 12), bg="light cyan")
+        submitNumPlayers_button['command'] =  partial(self.validateNumPlayers, num_of_players, enter_num, submitNumPlayers_button)
         submitNumPlayers_button.pack(side="top")
         submitNumPlayers_button.place(x=655, y =360)
         
@@ -78,9 +78,10 @@ class Canvas(tk.Canvas):
     def validateNumPlayers(self, num, entrybox, button):
         
         self.clear_canvas()
-        self.game.num_of_players = num.get()
         button.place_forget()
         entrybox.place_forget()
+
+        self.game.num_of_players = num.get()
         
         if self.game.num_of_players < 2:
             self.clear_canvas()
@@ -128,8 +129,13 @@ class Canvas(tk.Canvas):
             
     def displayTurn(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
         self.game.deal()    
-       
-        # j = 0
+        self.printCards()
+        self.makeAskForPlayerName()
+            
+
+    def printCards(self):
+        print("Player name: ", self.game.current_player.name)
+        
         card_indent = 425
         display_currentPlayer = self.create_text(460, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
         display_currentPlayerScore = self.create_text(660, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
@@ -141,12 +147,17 @@ class Canvas(tk.Canvas):
             self.svgFile = self.svgFile.subsample(2,2)
             self.create_image(card_indent , 300, anchor=tk.NW, image = self.svgFile)
             self.images.append(self.svgFile)
-            card_indent +=50
+            card_indent +=45
             i += 1
-        
+            
+    def remove_buttons(self, button_list):
+        for button in button_list:
+            button.destroy()        
+      
+    def makeAskForPlayerName(self):
         display_askOtherPlayerName = tk.Label(self, font = ("Purisa", 18), text ="Who would you like to ask for a card?", pady = 0, bg = 'alice blue')
         display_askOtherPlayerName.place(relx = 0.31, rely = 0.72)
-
+        
         askPlayerButtonNames = []
         for player in self.game.player_list:
             if player.name not in self.game.current_player.name:
@@ -156,47 +167,67 @@ class Canvas(tk.Canvas):
         button_refs = []
         for name in askPlayerButtonNames:
             button_indent += 0.2
-            askPlayer_button = tk.Button(self, text = name, bg="light cyan", command = lambda:[self.askPlayerForCard(name), display_askOtherPlayerName.destroy(), self.remove_buttons(button_refs)])
+            askPlayer_button = tk.Button(self, text = name, font = ("Purisa", 12), bg="light cyan") #command = lambda:[self.makeAskForCardPrompt(buttonValue), display_askOtherPlayerName.destroy(), self.remove_buttons(button_refs)])
+            askPlayer_button['command'] = partial(self.makeAskForCardPrompt, name, button_refs, display_askOtherPlayerName)
             askPlayer_button.place(relx = button_indent, rely = 0.8)
             button_refs.append(askPlayer_button)
             
-
-    def remove_buttons(self, button_list):
-        for button in button_list:
-            button.destroy()
-            
-    def askPlayerForCard(self, askedPlayerName):
-        askedPlayer = Player_library.Player()
-        
+    
+    def makeAskForCardPrompt(self, askedPlayerName, buttons, label):
         for player in self.game.player_list:
-            if askedPlayerName in player.name:
-                askedPlayer = player
+            if askedPlayerName == player.name:
+                self.game.asked_player = player
+                print(askedPlayerName + " " + player.name)
+        label.place_forget()   
+        self.remove_buttons(buttons)
+
+        print("Player asked: ", self.game.asked_player.name)
+
 
         display_askOtherPlayerCard = self.create_text(575, 600, font = ("Purisa", 18), fill = "black", text= "Which card would you like to ask for?")
-            
-        button_indent = 0.05
-        button_refs = []
+        button_indent = 0.04
         existing_values = []
         for card in self.game.current_player.player_hand.hand_cards:
             if card.card_value not in existing_values:
                 existing_values.append(card.card_value)
 
+        button_ref = []
         for value in existing_values:
-            button_indent += 0.16
-            askCardValue_button = tk.Button(self, text = value, bg="light cyan", command = lambda:[self.game.checkRequest(self.game.current_player, askedPlayer, crd), self.remove_buttons(button_refs)])
+            button_indent += 0.045
+            askCardValue_button = tk.Button(self, text = value, font = ("Purisa", 12), bg="light cyan") #lambda:[self.game.checkRequest(self.game.current_player, askedPlayer, crd), self.remove_buttons(button_refs)]
             buttonValue = askCardValue_button['text']
             crd = Card_library.Card(buttonValue, '♡')
-            askCardValue_button.place(relx = button_indent, rely = 0.8)
-            button_refs.append(askCardValue_button)
-    
+            button_ref.append(askCardValue_button)
+            askCardValue_button['command'] = partial(self.processCheckRequest, crd, askCardValue_button, button_ref)
+            askCardValue_button.place(relx = (0.1 + button_indent), rely = 0.8)
 
-    # def add_image(self, player_index, hand_index, card_indent):
+    def processCheckRequest(self, crd, button, button_list):
+        print("Card asked for: ", crd.card_value + crd.card_suit)
+        button.place_forget()
+        testRequest = self.game.checkRequest(self.game.asked_player, crd)
+        print(testRequest)
+        if(testRequest == True):
+            self.clear_canvas()
+            self.remove_buttons(button_list)
+            self.printCards()
+            display_askOtherPlayerCard = self.create_text(575, 565, font = ("Purisa", 16), fill = "black", text= "You received a new card. Go Again.")
+            self.makeAskForPlayerName()
+            self.game.checkFour(self.game.current_player)
+        else:
+            self.clear_canvas()
+            self.remove_buttons(button_list)
+            card = self.game.game_deck.draw()
+            self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
+            print("False: ", card.card_file)
+            self.game.nextPlayer()
+            self.printCards()
+            self.makeAskForPlayerName()
+            
+            
 
-    #     pathBuilder = "CIS-143-W01\\Assignment 12\\Cards2\\"+ self.game.player_list[player_index].player_hand.hand_cards[hand_index].card_file
-    #     self.svgFile = tk.PhotoImage(file = pathBuilder)
-    #     self.svgFile = self.svgFile.subsample(3,3)
-    #     self.create_image(card_indent, 20, anchor=tk.NW, image = self.svgFile)
-
+            
+             
+        
     def assignPlayerName(self, playerNames):
         for x in playerNames:
             self.game.addPlayers(x.get())
