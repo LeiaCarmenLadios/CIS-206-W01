@@ -28,17 +28,46 @@ class Game:
       def num_of_players(self, num):
          self._num_of_players = num
 
+      @property
+      def asked_player(self):
+         return self._asked_player
+
+      @asked_player.setter
+      def asked_player(self, name):
+         self._asked_player = name
+         
+      @property
+      def current_player_index(self):
+         return self._current_player_index
+
+      @current_player.setter
+      def current_player(self, player):
+         self._current_player = player
+      
+      @current_player_index.setter
+      def current_player_index(self, index):
+         self._current_player_index = index
+
+
       def __init__(self):
          self._current_player = Player_library.Player()
          self._game_deck = Deck_library.Deck()
          self._player_list = []
          self._finished_players = []
-         self.num_of_players = 0
+         self.num_of_players = len(self.player_list)
+         self.asked_player = Player_library.Player()
+         self._current_player_index = 0
       
       def addPlayers(self, playerName):
          player_to_add = Player_library.Player(playerName)
          self.player_list.append(player_to_add)
          self._current_player = self.player_list[0]
+         self._current_player_index = 0
+
+      def nextPlayer(self):
+         self.current_player_index = (self.current_player_index + 1) % (len(self.player_list))
+         self.current_player = self.player_list[(self.current_player_index)]
+         
 
       def print_player_list(self):
          name_list = 'Players: ('
@@ -59,6 +88,7 @@ class Game:
             counter -= 1
 
       def checkFour(self, player):
+         
          # crd = Card_library.Card('A', '♢')
          # player.player_hand.addToHand(crd.card_value, crd.card_suit)
          # crd2 = Card_library.Card('A', '♤')
@@ -93,18 +123,26 @@ class Game:
             player.books.append(ix)
             player.player_hand.removeFromHand(ix)
 
-      def checkRequest(self, current_player, player_asked, card):
-         self._current_player = current_player
+      def checkRequest(self, player_asked, card):
          is_found = False
          suits_to_transfer = []
          for crd in player_asked.player_hand.hand_cards:
             if crd.card_value == card.card_value:
                suits_to_transfer.append(crd.card_suit)
                is_found = True
+               print("card is found:", crd.card_value)
          for suit in suits_to_transfer:
             player_asked.player_hand.removeFromHand(card.card_value)
-            file_string = card.card_value + suit + ".gif"
-            current_player.player_hand.addToHand(card.card_value, suit, file_string)
+            file_string = ""
+            if suit == '♧':
+               file_string = card.card_value + 'C' + ".gif"
+            elif suit == '♢':
+               file_string = card.card_value + 'D' + ".gif"
+            elif suit == '♡':
+               file_string = card.card_value + 'H' + ".gif"
+            elif suit == '♤':
+               file_string = card.card_value + 'S' + ".gif"
+            self.current_player.player_hand.addToHand(card.card_value, suit, file_string)
          return is_found
 
 
