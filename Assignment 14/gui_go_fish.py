@@ -7,8 +7,8 @@ import Player as Player_library
 import Game as Game_library
 from functools import partial
 
-    # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
-    # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
+# https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
+# https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
 
 
 class Root(tk.Tk):
@@ -42,7 +42,6 @@ class FileMenu(tk.Menu):
         rt.destroy()
         
        
-
 class Canvas(tk.Canvas):
     """Creates drawing canvas."""
     
@@ -61,7 +60,7 @@ class Canvas(tk.Canvas):
         if(isinstance(button2, tk.Button)):
             button2.destroy()
         
-        intro_msg = self.create_text(580, 300, font = ("Purisa", 18),
+        intro_msg = self.create_text(580, 275, font = ("Purisa", 18),
         text = """
         \t        Welcome to the game of GO FISH!!!\n
         # How many players will be playing? (minimum 2; maximum 5): """)
@@ -71,7 +70,6 @@ class Canvas(tk.Canvas):
         enter_num = tk.Entry(self, textvariable = num_of_players, font = ("Purisa", 13))
         enter_num.place(x=450, y =365, width = 200)
       
-
         submitNumPlayers_button = tk.Button(self, text ="Submit",  font = ("Purisa", 12), bg="light cyan")
         submitNumPlayers_button['command'] =  partial(self.validateNumPlayers, num_of_players, enter_num, submitNumPlayers_button)
         submitNumPlayers_button.pack(side="top")
@@ -108,16 +106,11 @@ class Canvas(tk.Canvas):
         playerNameAsk_msg = tk.Label(self, font = ("Purisa", 12), text = "Please enter player names: ", bg = 'alice blue')
         playerNameAsk_msg.grid(row = 1, column = 0)
         playerNameGiven = tk.StringVar()
-
        
         for x in range(self.game.num_of_players):
             enter_name = tk.Entry(self, font = ("Purisa", 12))
-            # self.grid_rowconfigure(1, weight=2)
-            # self.grid(row = 30, column = 9)
             enter_name.grid(row = x + 2, column = 0, padx = 525, pady = 10)
             entered_names.append(enter_name)
-            
-           
 
         submitPlayerName_button = tk.Button(self, text ="Submit", bg="light cyan") # lambda:[self.assignPlayerName(entered_names), submitPlayerName_button.destroy()]
         submitPlayerName_button['command'] = partial(self.assignPlayerName, entered_names, submitPlayerName_button)
@@ -144,27 +137,28 @@ class Canvas(tk.Canvas):
         self.makeAskForPlayerName()
             
 
-    def printCards(self, button1 = "", label = ""):
+    def printCards(self, button1 = "", label = "", label2 = ""):
         print("Player name: ", self.game.current_player.name)
         self.clear_canvas()
 
         if(isinstance(button1, tk.Button)):
             button1.destroy()
             label.destroy()
+            label2.destroy()
             self.makeAskForPlayerName()
         self.game.checkFour(self.game.current_player)
-        card_indent = 425
-        display_currentPlayer = self.create_text(460, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
-        display_currentPlayerScore = self.create_text(660, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
+        card_indent = 530 - (len(self.game.current_player.player_hand.hand_cards)*16)
+        display_currentPlayer = self.create_text(570, 100, font = ("Purisa", 32), fill = "black", text= self.game.current_player.name + "'s turn.")
+        display_currentPlayerScore = self.create_text(560, 210, font = ("Purisa", 22), fill = "black", text= "Score: " + str(self.game.current_player.score) + "\t\t\tBooks: " + str(self.game.current_player.books))
        
         i = 0
         while (i < len(self.game.current_player.player_hand.hand_cards)):
             print(self.game.current_player.player_hand.hand_cards[i].card_file)
-            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
+            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
             self.svgFile = self.svgFile.subsample(2,2)
             self.create_image(card_indent , 300, anchor=tk.NW, image = self.svgFile)
             self.images.append(self.svgFile)
-            card_indent +=45
+            card_indent += 37
             i += 1
             
     def remove_buttons(self, button_list):
@@ -181,10 +175,10 @@ class Canvas(tk.Canvas):
             if player.name not in self.game.current_player.name:
                 askPlayerButtonNames.append(player.name)
 
-        button_indent = 0.08
+        button_indent = 0.17
         button_refs = []
         for name in askPlayerButtonNames:
-            button_indent += 0.2
+            button_indent += 0.13
             askPlayer_button = tk.Button(self, text = name, font = ("Purisa", 12), bg="light cyan") #command = lambda:[self.makeAskForCardPrompt(buttonValue), display_askOtherPlayerName.destroy(), self.remove_buttons(button_refs)])
             askPlayer_button['command'] = partial(self.makeAskForCardPrompt, name, button_refs, display_askOtherPlayerName)
             askPlayer_button.place(relx = button_indent, rely = 0.8)
@@ -211,13 +205,13 @@ class Canvas(tk.Canvas):
 
         button_ref = []
         for value in existing_values:
-            button_indent += 0.045
+            button_indent += 0.040
             askCardValue_button = tk.Button(self, text = value, font = ("Purisa", 12), bg="light cyan") #lambda:[self.game.checkRequest(self.game.current_player, askedPlayer, crd), self.remove_buttons(button_refs)]
             buttonValue = askCardValue_button['text']
             crd = Card_library.Card(buttonValue, '♡')
             button_ref.append(askCardValue_button)
             askCardValue_button['command'] = partial(self.processCheckRequest, crd, askCardValue_button, button_ref)
-            askCardValue_button.place(relx = (0.1 + button_indent), rely = 0.8)
+            askCardValue_button.place(relx = (0.25 + button_indent), rely = 0.8)
 
     def processCheckRequest(self, crd, button, button_list):
         print("Card asked for: ", crd.card_value + crd.card_suit)
@@ -228,34 +222,36 @@ class Canvas(tk.Canvas):
             self.clear_canvas()
             self.remove_buttons(button_list)
             self.printCards()
-            display_askOtherPlayerCard = self.create_text(575, 565, font = ("Purisa", 16), fill = "black", text= "You received a new card. Go Again.")
+            display_askOtherPlayerCard = self.create_text(575, 558, font = ("Purisa", 16), fill = "black", text= "Correct! You received a new card. Go Again.")
             self.makeAskForPlayerName()
             self.game.checkFour(self.game.current_player)
             if len(self.game.current_player.player_hand.hand_cards) == 0:
-               for _ in range(5):
-                  if (len(self.game.game_deck.deck_of_cards) > 0):
-                     card = self.game.game_deck.draw()
-                     self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
-                  else:
-                     self.card_correct = False
-                     self.game.finished_players.append(self.game.current_player)
-                     self.game.player_list.remove(self.game.current_player)
+                for _ in range(5):
+                    if (len(self.game.game_deck.deck_of_cards) > 0):
+                        card = self.game.game_deck.draw()
+                        self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
+                    else:
+                        self.card_correct = False
+                        self.game.finished_players.append(self.game.current_player)
+                        self.game.player_list.remove(self.game.current_player)
                 self.game.nextPlayer()
         else:
             # self.clear_canvas()
             self.remove_buttons(button_list)
             card = self.game.game_deck.draw()
-            card_drawn_label = tk.Label(self, text = "You drew: ", font = ("Purisa", 12))
-            card_drawn_label.place(relx = 0.6, rely= 0.08)
-            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + card.card_file)
+            card_drawn_label = tk.Label(self, text = "You drew: ", font = ("Purisa", 16), bg = "alice blue")
+            card_drawn_label.place(relx = 0.73, rely= 0.083)
+            go_fish_label = tk.Label(self, text = " ><(((°>     GO FISH!    ><(((°>       ", font = ("Purisa", 42), bg = "alice blue", fg = "#008080")
+            go_fish_label.place(relx = 0.155, rely= 0.685)
+            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + card.card_file)
             self.svgFile = self.svgFile.subsample(2,2)
-            self.create_image(800, 50, anchor=tk.NW, image = self.svgFile)
+            self.create_image(1000, 70, anchor=tk.NW, image = self.svgFile)
             self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
             print("False: ", card.card_file)
             self.game.nextPlayer()
             displayDrawnCards_button = tk.Button(self, text = "Next Player", font = ("Purisa", 12), bg="light cyan")
             displayDrawnCards_button.place(relx = 0.45, rely = 0.8)
-            displayDrawnCards_button['command'] = partial(self.printCards, displayDrawnCards_button, card_drawn_label)
+            displayDrawnCards_button['command'] = partial(self.printCards, displayDrawnCards_button, card_drawn_label, go_fish_label)
             
             
 
@@ -327,6 +323,5 @@ if __name__ == "__main__":
     root = Root()
     menu = MainMenu(root)
     canvas = Canvas(root, bg = 'alice blue')
-    
-
+    root.resizable(width=False, height=False)
     root.mainloop()
