@@ -6,8 +6,6 @@ import Hand as Hand_library
 import Player as Player_library
 import Game as Game_library
 from functools import partial
-# import PIL.Image
-# import PIL.ImageTk
 
     # https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
     # https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
@@ -146,9 +144,15 @@ class Canvas(tk.Canvas):
         self.makeAskForPlayerName()
             
 
-    def printCards(self):
+    def printCards(self, button1 = "", label = ""):
         print("Player name: ", self.game.current_player.name)
-        
+        self.clear_canvas()
+
+        if(isinstance(button1, tk.Button)):
+            button1.destroy()
+            label.destroy()
+            self.makeAskForPlayerName()
+        self.game.checkFour(self.game.current_player)
         card_indent = 425
         display_currentPlayer = self.create_text(460, 225, font = ("Purisa", 18), fill = "black", text= self.game.current_player.name + "'s turn.")
         display_currentPlayerScore = self.create_text(660, 225, font = ("Purisa", 18), fill = "black", text= "Book Count: " + str(self.game.current_player.score))
@@ -165,7 +169,8 @@ class Canvas(tk.Canvas):
             
     def remove_buttons(self, button_list):
         for button in button_list:
-            button.destroy()        
+            button.destroy()
+          
       
     def makeAskForPlayerName(self):
         display_askOtherPlayerName = tk.Label(self, font = ("Purisa", 18), text ="Who would you like to ask for a card?", pady = 0, bg = 'alice blue')
@@ -226,15 +231,35 @@ class Canvas(tk.Canvas):
             display_askOtherPlayerCard = self.create_text(575, 565, font = ("Purisa", 16), fill = "black", text= "You received a new card. Go Again.")
             self.makeAskForPlayerName()
             self.game.checkFour(self.game.current_player)
+            if len(self.game.current_player.player_hand.hand_cards) == 0:
+               for _ in range(5):
+                  if (len(self.game.game_deck.deck_of_cards) > 0):
+                     card = self.game.game_deck.draw()
+                     self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
+                  else:
+                     self.card_correct = False
+                     self.game.finished_players.append(self.game.current_player)
+                     self.game.player_list.remove(self.game.current_player)
+                self.game.nextPlayer()
         else:
-            self.clear_canvas()
+            # self.clear_canvas()
             self.remove_buttons(button_list)
             card = self.game.game_deck.draw()
+            card_drawn_label = tk.Label(self, text = "You drew: ", font = ("Purisa", 12))
+            card_drawn_label.place(relx = 0.6, rely= 0.08)
+            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + card.card_file)
+            self.svgFile = self.svgFile.subsample(2,2)
+            self.create_image(800, 50, anchor=tk.NW, image = self.svgFile)
             self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
             print("False: ", card.card_file)
             self.game.nextPlayer()
-            self.printCards()
-            self.makeAskForPlayerName()
+            displayDrawnCards_button = tk.Button(self, text = "Next Player", font = ("Purisa", 12), bg="light cyan")
+            displayDrawnCards_button.place(relx = 0.45, rely = 0.8)
+            displayDrawnCards_button['command'] = partial(self.printCards, displayDrawnCards_button, card_drawn_label)
+            
+            
+
+        
             
            
     def display_start_page(self, button1 = ""):
