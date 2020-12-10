@@ -125,8 +125,9 @@ class Canvas(tk.Canvas):
         submitPlayerName_button['command'] = partial(self.assignPlayerName, entered_names, submitPlayerName_button)
         submitPlayerName_button.grid(row = self.game.num_of_players + 5, column = 0, pady =  20, padx =50)
         
-    def assignPlayerName(self, playerNames, button):
-        button.destroy()
+    def assignPlayerName(self, playerNames, button = ""):
+        if(isinstance(button, tk.Button)):
+            button.destroy()
         for x in playerNames:
             self.game.addPlayers(x.get())
 
