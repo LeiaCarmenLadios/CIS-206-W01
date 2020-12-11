@@ -154,7 +154,7 @@ class Canvas(tk.Canvas):
         i = 0
         while (i < len(self.game.current_player.player_hand.hand_cards)):
             print(self.game.current_player.player_hand.hand_cards[i].card_file)
-            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
+            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + self.game.current_player.player_hand.hand_cards[i].card_file)
             self.svgFile = self.svgFile.subsample(2,2)
             self.create_image(card_indent , 300, anchor=tk.NW, image = self.svgFile)
             self.images.append(self.svgFile)
@@ -243,7 +243,7 @@ class Canvas(tk.Canvas):
             card_drawn_label.place(relx = 0.73, rely= 0.083)
             go_fish_label = tk.Label(self, text = " ><(((°>     GO FISH!    ><(((°>       ", font = ("Purisa", 42), bg = "alice blue", fg = "#008080")
             go_fish_label.place(relx = 0.155, rely= 0.685)
-            self.svgFile = tk.PhotoImage(file = "CIS-216-W01\\Assignment 14\\Cards2\\" + card.card_file)
+            self.svgFile = tk.PhotoImage(file = "Assignment 14\\Cards2\\" + card.card_file)
             self.svgFile = self.svgFile.subsample(2,2)
             self.create_image(1000, 70, anchor=tk.NW, image = self.svgFile)
             self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
