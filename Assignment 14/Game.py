@@ -62,7 +62,7 @@ class Game:
 
     @property
     def current_player_index(self):
-        """Gets/returns the current player index (What is this??).""" ###
+        """Gets/returns the index of the current player in the list."""
         return self._current_player_index
 
     @current_player.setter
@@ -72,7 +72,7 @@ class Game:
 
     @current_player_index.setter
     def current_player_index(self, index):
-        """Sets the current player indes (What is this??).""" ###
+        """Sets the index of the current player in the list."""
         self._current_player_index = index
 
     def __init__(self):
@@ -86,14 +86,14 @@ class Game:
         self._current_player_index = 0
 
     def addPlayers(self, playerName):
-        """Adds a player to the player_list.""" ### Not sure what's going on here
+        """Adds a player to the player_list."""
         player_to_add = Player_library.Player(playerName)
         self.player_list.append(player_to_add)
         self._current_player = self.player_list[0]
         self._current_player_index = 0
 
     def nextPlayer(self):
-        """Jumps to the next player in player_index.""" ###
+        """Adds one to player_index, changing the index of the current player in the list."""
         self.current_player_index = (self.current_player_index + 1) % (len(self.player_list))
         self.current_player = self.player_list[(self.current_player_index)]
 
