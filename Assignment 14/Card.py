@@ -48,5 +48,5 @@ class Card:
 
 if __name__ == '__main__':
     """Sets card values and prints them out."""
-    crd = Card('A', 'F')
+    crd = Card('A', '♧', 'AC.gif')
     print(crd)
