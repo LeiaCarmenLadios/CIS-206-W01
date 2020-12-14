@@ -14,8 +14,8 @@ class Hand:
     def __init__(self):           
         self.hand_cards = []
 
-    def addToHand(self, value, suit, file):
-        add_crd = Card_library.Card(value, suit, file)
+    def addToHand(self, value, suit, cfile):
+        add_crd = Card_library.Card(value, suit, cfile)
         self.hand_cards.append(add_crd)
 
     def removeFromHand(self, value):
@@ -39,3 +39,4 @@ class Hand:
 if __name__ == "__main__":
     pass
     
+
