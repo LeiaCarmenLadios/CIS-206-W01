@@ -31,15 +31,7 @@ class FileMenu(tk.Menu):
     """Creates File menu."""
     def __init__(self, root, *args, **kwargs):
         tk.Menu.__init__(self, root, *args, **kwargs)
-        make_new_game = partial(self.new_game, root)
-        self.add_command(label="New Game", command= make_new_game)
         self.add_command(label="Exit", command=root.quit)
-
-    def new_game(self,rt):
-        root = Root()
-        newMain = MainMenu(root)
-        newCanvas = Canvas(root)
-        rt.destroy()
         
        
 class Canvas(tk.Canvas):
@@ -47,18 +39,21 @@ class Canvas(tk.Canvas):
 
     def __init__(self, root, *args, **kwargs):
         tk.Canvas.__init__(self, root, *args, **kwargs)
+        self.root = root
         self.pack(fill="both", expand=True)
         self.game = Game_library.Game()
         self.display_start_page()
         self.images = []
         self.game_over = False
   
-    def askNumPlayers(self, button1 = "", button2 = ""):
+    def askNumPlayers(self, button1 = "", button2 = "", new_game_bool = False):
         self.clear_canvas()
         if(isinstance(button1, tk.Button)):
             button1.destroy()
         if(isinstance(button2, tk.Button)):
             button2.destroy()
+            if(new_game_bool == True):
+                self.game = Game_library.Game()
         
         intro_msg = self.create_text(580, 275, font = ("Purisa", 18),
         text = """
@@ -125,7 +120,7 @@ class Canvas(tk.Canvas):
         for entryBox in self.grid_slaves():
             entryBox.grid_forget()
 
-        print(self.game.print_player_list())
+        
         self.clear_canvas()
         self.grid_forget()
         self.displayTurn()
@@ -137,11 +132,13 @@ class Canvas(tk.Canvas):
         self.makeAskForPlayerName()
             
 
-    def printCards(self, button1 = "", label = "", label2 = ""):
+    def printCards(self, button1 = "", label = tk.Label, label2 = tk.Label, empty_hand_draw = False):
         print("Player name: ", self.game.current_player.name)
         self.clear_canvas()
 
         if(isinstance(button1, tk.Button)):
+            if(empty_hand_draw == True):
+                self.game.nextPlayer()
             button1.destroy()
             label.destroy()
             label2.destroy()
@@ -223,6 +220,7 @@ class Canvas(tk.Canvas):
         testRequest = self.game.checkRequest(self.game.asked_player, crd) #testing
         print(testRequest) #testing
         if(testRequest == True):
+           
             self.clear_canvas()
             self.remove_buttons(button_list)
             self.printCards()
@@ -230,16 +228,18 @@ class Canvas(tk.Canvas):
             self.game.checkFour(self.game.current_player)
 
             if(len(self.game.player_list) <= 1):
-                    """Game Ends"""
-                    self.clear_canvas() 
-                    end_game_msg = self.create_text(575, 558, font = ("Purisa", 16), fill = "black", text= "Winna!")
+                """Game Ends if only one player left"""
+                self.clear_canvas() 
+                self.display_winner_screen()
                         
             if len(self.game.current_player.player_hand.hand_cards) == 0:
+                print("Length of the deck: ", len(self.game.game_deck.deck_of_cards))
                 if(len(self.game.game_deck.deck_of_cards) == 0):
                     """Removing a player because no cards are left in the deck."""
                     self.game.finished_players.append(self.game.current_player)
                     x = self.game.player_list.index(self.game.current_player)
                     print("Player index:", x)
+                    print("Player removed: ", self.game.current_player)
                     self.game.player_list.remove(self.game.current_player)
 
                     if(len(self.game.player_list) >= (x + 1)):
@@ -255,26 +255,42 @@ class Canvas(tk.Canvas):
                     if(len(self.game.player_list) <= 1):
                         """Game Ends"""
                         self.clear_canvas() 
-                        end_game_msg = self.create_text(575, 558, font = ("Purisa", 16), fill = "black", text= "Winna!")
+                        self.display_winner_screen()
                     else:
                         if(self.game.current_player not in self.game.finished_players):
-                             self.printCards()
-                             self.makeAskForPlayerName()
+                                self.printCards()
+                                self.makeAskForPlayerName()
                 else:
                     """Deals up to 5 cards depending on how many are left in the deck.
                         Then moves onto the next player and draws ask menu for next player.
                     """
+                    print("ELSE is happening (line 269)")
+                    card = ""
                     for _ in range(5):
                         if (len(self.game.game_deck.deck_of_cards) > 0):
                             card = self.game.game_deck.draw()
+                            print("card drawn: ", card.card_value)
                             self.game.current_player.player_hand.addToHand(card.card_value, card.card_suit, card.card_file)
-                    self.game.nextPlayer()
+                    print("Game deck:", self.game.game_deck)
+                    go_fish_label = tk.Label(self, text = "YOU'RE OUT OF CARDS. GO FISH!", font = ("Purisa", 38), bg = "alice blue", fg = "#008080")
+                    go_fish_label.place(relx = 0.09, rely= 0.64)
+
+                    
+                    empty_card_draw = True
                     self.printCards()
-                    self.makeAskForPlayerName(display_askOtherPlayerCard)
+
+                    card_drawn_label = tk.Label(self, text = "", font = ("Purisa", 16), bg = "alice blue")
+                    card_drawn_label.place(relx = 0.73, rely= 0.083)
+
+                    display_currentPlayer = self.create_text(570, 100, font = ("Purisa", 32), fill = "black", text= self.game.current_player.name + "'s turn.")
+                    display_currentPlayerScore = self.create_text(560, 210, font = ("Purisa", 22), fill = "black", text= "Score: " + str(self.game.current_player.score) + "\t\t\tBooks: " + str(self.game.current_player.books))
+                    displayDrawnCards_button = tk.Button(self, text = "Next Player", font = ("Purisa", 12), bg="light cyan")
+                    displayDrawnCards_button.place(relx = 0.45, rely = 0.8)
+                    displayDrawnCards_button['command'] = partial(self.printCards, displayDrawnCards_button, card_drawn_label, go_fish_label, empty_card_draw)
+                    # self.printCards()        
             else:
                 self.makeAskForPlayerName(display_askOtherPlayerCard)
         else:
-
             self.delete(text)
             self.remove_buttons(button_list)
           
@@ -303,8 +319,30 @@ class Canvas(tk.Canvas):
             
             
 
-        
-            
+    def display_winner_screen(self):
+        print("made it to display_winner_screen")
+        text_winner = " "
+        self.game.finished_players.append(self.game.player_list[0])
+        self.game.player_list.remove(self.game.player_list[0])
+        player_max_score = 0
+        for player in self.game.finished_players:
+            player_max_score = self.game.finished_players[0].score
+            if(player.score >= player_max_score):
+                player_max_score = player.score
+
+        for player in self.game.finished_players:
+            if(player.score == player_max_score):
+                text_winner += player.name + " "  
+                      
+        end_game_msg = self.create_text(500, 250, font = ("Purisa", 25), fill = "black", text= f"Winner(s): {text_winner}")
+        end_game_msg = self.create_text(700, 250, font = ("Purisa", 25), fill = "black", text= f"Score: {player_max_score}")
+        endGame_button = tk.Button(self, text ="Exit Game", font = ("Purisa", 14), bg="light cyan") #lambda:[self.clear_canvas(), self.askNumPlayers(), startGame_button.destroy(), gameRules_button.destroy()]
+        endGame_button.pack(pady = (300, 20))
+        newGame_button = tk.Button(self, text ="New Game", font = ("Purisa", 14), bg="light cyan")
+        newGame_button.pack()
+        new_game_bool = True
+        endGame_button['command'] = partial(self.root.quit)
+        newGame_button['command'] = partial(self.askNumPlayers, endGame_button, newGame_button, new_game_bool)    
            
     def display_start_page(self, button1 = ""):
         self.clear_canvas()
