@@ -7,37 +7,46 @@ class Player:
 
     @property # allows us to access the method like it's a property
     def name(self):
+        """Gets/returns the player name."""
         return self._name
 
     @name.setter 
     def name(self, name):
+        """Sets the name of player."""
         self._name = name
 
     @property 
     def is_playing(self):
+        """Gets/returns bool indicating whether player is playing."""
         return self._is_playing
 
     @is_playing.setter
     def is_playing(self, is_playing):
+        """Sets bool indicating whether player is playing."""
         self._is_playing = is_playing
 
     @property 
     def score(self):
+        """Gets/returns score (number of books)."""
         return self._score
     
     @score.setter
     def score(self, score):
+        """Sets player score."""
         self._score = score
 
     @property 
     def player_hand(self):
+        """Gets/returns player hand."""
         return self._player_hand
 
     @property 
     def books(self):
+        """Gets/returns books (list of cards won that determine score)."""
         return self._books
 
     def __init__(self, name = "Player"):
+        """Initializes Player instance object with data attributes."""
         self.name = name
         self.is_playing = False
         self.score = 0
@@ -45,6 +54,7 @@ class Player:
         self._player_hand = Hand_library.Hand()
 
     def askForCard(self):
+        """Prompts user for which card they would like to ask for and takes input."""
         VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         while True:
             print(self.player_hand)
@@ -77,11 +87,14 @@ class Player:
         #     pass # PLACEHOLDER 
 
     def addToScore(self):
+        """Adds 1 point to player score"""
         self.score += 1
     
     def __str__(self):
+        """__str__ magic method that formats console output for Player objects"""
         return "\nName: {} Score: {} Books: {}".format(self.name, self.score, self.books)
 
 
 if __name__ == "__main__":
+    """Runs main program logic when current file is run as main""
     pass
