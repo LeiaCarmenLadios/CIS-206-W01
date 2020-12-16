@@ -63,3 +63,13 @@ We have also picked out the card design that we want to use and draw onto the Ca
 This week, we continued to work on the game introduction which included displaying game rules, and initializing the number of players and their names.
 
 We are now starting to work on the card game portion itself and deciding on our design for the player canvas.
+
+## Assignment 15
+We have finished the end of the game. 
+
+We have had to troubleshoot a couple of scenarios and display more infromation on the Canvas throughout the week. We were able to show which card they drew from the deck
+on the upper right side of the Canvas. 
+
+We got rid of lambda expressions and handled clearing the Canvas in different functions.
+
+We will continue to work on the documentation. 
