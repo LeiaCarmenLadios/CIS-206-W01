@@ -96,5 +96,5 @@ class Player:
 
 
 if __name__ == "__main__":
-    """Runs main program logic when current file is run as main""
+    """Runs main program logic when current file is run as main"""
     pass
