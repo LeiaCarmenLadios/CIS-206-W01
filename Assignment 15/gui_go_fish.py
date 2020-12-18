@@ -1,15 +1,6 @@
 """Contains functions related to interactions between players (4-of-a-kind, scoring,
     asking another player for a card, dealing...)
 
-Input:
-    None ### should things outside of init be included?
-
-Output:
-    WIP
-
-Notes:
-    WIP
-
 References:
     https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
     https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
