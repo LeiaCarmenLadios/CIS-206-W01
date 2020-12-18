@@ -1,3 +1,20 @@
+"""Contains functions related to interactions between players (4-of-a-kind, scoring,
+    asking another player for a card, dealing...)
+
+Input:
+    None ### should things outside of init be included?
+
+Output:
+    WIP
+
+Notes:
+    WIP
+
+References:
+    https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
+    https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
+"""
+
 import tkinter as tk
 import go_fish as gf
 import Card as Card_library
@@ -7,17 +24,12 @@ import Player as Player_library
 import Game as Game_library
 from functools import partial
 
-# https://stackoverflow.com/questions/26479728/tkinter-canvas-image-not-displaying    
-# https://stackoverflow.com/questions/16424091/why-does-tkinter-image-not-show-up-if-created-in-a-function
-
-
 class Root(tk.Tk):
     """Creates root window."""
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("GO FISH GAME")
         self.geometry("1200x800")
-
 
 class MainMenu(tk.Menu):
     """Creates Main menu."""
@@ -32,12 +44,11 @@ class FileMenu(tk.Menu):
     def __init__(self, root, *args, **kwargs):
         tk.Menu.__init__(self, root, *args, **kwargs)
         self.add_command(label="Exit", command=root.quit)
-        
-       
-class Canvas(tk.Canvas):
-    """Creates drawing canvas."""
 
+class Canvas(tk.Canvas):
+    """Contains all functions related to the canvas."""
     def __init__(self, root, *args, **kwargs):
+        """Creates drawing canvas."""
         tk.Canvas.__init__(self, root, *args, **kwargs)
         self.root = root
         self.pack(fill="both", expand=True)
@@ -45,8 +56,18 @@ class Canvas(tk.Canvas):
         self.display_start_page()
         self.images = []
         self.game_over = False
-  
+
     def askNumPlayers(self, button1 = "", button2 = "", new_game_bool = False):
+        """Creates a menu where users can input the amount of players playing
+
+        Args:
+            button1, button2: specify buttons that are already drawn so they can be destroyed
+            new_game_bool: If true, will display the winner screen and start a new game.
+
+        Raises:
+            None.
+
+        """
         self.clear_canvas()
         if(isinstance(button1, tk.Button)):
             button1.destroy()
@@ -69,16 +90,25 @@ class Canvas(tk.Canvas):
         submitNumPlayers_button['command'] =  partial(self.validateNumPlayers, num_of_players, enter_num, submitNumPlayers_button)
         submitNumPlayers_button.pack(side="top")
         submitNumPlayers_button.place(x=655, y =360)
-        
 
     def validateNumPlayers(self, num, entrybox, button):
-        
+        """Validates that the number of players entered by the user is a valid number
+
+        Args:
+            num: number of players that were entered by the player
+            entrybox: specify one to forget
+            button: specify one to forget
+
+        Raises:
+            None.
+
+        """
         self.clear_canvas()
         button.place_forget()
         entrybox.place_forget()
 
         self.game.num_of_players = num.get()
-        
+
         if self.game.num_of_players < 2:
             self.clear_canvas()
             playerName_msg = self.create_text(580, 250, font = ("Purisa", 12), fill = "red", text="You have entered less than the minimum(2) number of players.")
@@ -90,10 +120,18 @@ class Canvas(tk.Canvas):
         else:
             self.get_names()
 
-                
     def get_names(self):
+        """Gets the names of each player from the user using text-boxes.
+
+        Args:
+            None
+
+        Raises:
+            None.
+
+        """
         entered_names = []
-        
+
         # playerNameAsk_msg = self.create_text(580, 250, font = ("Purisa", 12), text="Please enter player names: ")
         decoyLabel = tk.Label(self, text ="", pady = 120, bg = 'alice blue')
         decoyLabel.grid(row=0, column =0)
@@ -101,8 +139,9 @@ class Canvas(tk.Canvas):
         playerNameAsk_msg = tk.Label(self, font = ("Purisa", 12), text = "Please enter player names: ", bg = 'alice blue')
         playerNameAsk_msg.grid(row = 1, column = 0)
         playerNameGiven = tk.StringVar()
-       
+
         for x in range(self.game.num_of_players):
+        """Creates entry boxes for the corresponding amount of players."""
             enter_name = tk.Entry(self, font = ("Purisa", 12))
             enter_name.grid(row = x + 2, column = 0, padx = 525, pady = 10)
             entered_names.append(enter_name)
@@ -110,8 +149,18 @@ class Canvas(tk.Canvas):
         submitPlayerName_button = tk.Button(self, text ="Submit", bg="light cyan") # lambda:[self.assignPlayerName(entered_names), submitPlayerName_button.destroy()]
         submitPlayerName_button['command'] = partial(self.assignPlayerName, entered_names, submitPlayerName_button)
         submitPlayerName_button.grid(row = self.game.num_of_players + 5, column = 0, pady =  20, padx =50)
-        
+
     def assignPlayerName(self, playerNames, button = ""):
+        """Calls a function in the Game module that adds players to the game's list of players
+
+        Args:
+            playerNames: specify a list containing the names of all players
+            button: specify previously existing button to destroy
+
+        Raises:
+            None.
+
+        """
         if(isinstance(button, tk.Button)):
             button.destroy()
         for x in playerNames:
@@ -120,19 +169,29 @@ class Canvas(tk.Canvas):
         for entryBox in self.grid_slaves():
             entryBox.grid_forget()
 
-        
         self.clear_canvas()
         self.grid_forget()
         self.displayTurn()
 
-            
     def displayTurn(self):  #https://pypi.org/project/unicards/ unicode characters for playing cards
+        """Displays information for the first player."""
         self.game.deal() 
         self.printCards()
         self.makeAskForPlayerName()
-            
 
     def printCards(self, button1 = "", label = tk.Label, label2 = tk.Label, empty_hand_draw = False):
+        """Prints out the cards on screen for a player.
+
+        Args:
+            button1: specify a previously existing button to destroy
+            label: specify a previously existing label to destroy
+            label2: specify a previously existing label to destroy
+            empty_hand_draw:
+
+        Raises:
+            None.
+
+        """
         print("Player name: ", self.game.current_player.name)
         self.clear_canvas()
 
@@ -150,7 +209,7 @@ class Canvas(tk.Canvas):
         card_indent = 530 - (len(self.game.current_player.player_hand.hand_cards)*16)
         display_currentPlayer = self.create_text(570, 100, font = ("Purisa", 32), fill = "black", text= self.game.current_player.name + "'s turn.")
         display_currentPlayerScore = self.create_text(560, 210, font = ("Purisa", 22), fill = "black", text= "Score: " + str(self.game.current_player.score) + "\t\t\tBooks: " + str(self.game.current_player.books))
-       
+
         i = 0
         while (i < len(self.game.current_player.player_hand.hand_cards)):
             print(self.game.current_player.player_hand.hand_cards[i].card_file)
@@ -160,14 +219,23 @@ class Canvas(tk.Canvas):
             self.images.append(self.svgFile)
             card_indent += 37
             i += 1
-            
+
     def remove_buttons(self, button_list):
+    """Destroys all buttons in a list of buttons (parameter)."""
         for button in button_list:
             button.destroy()
           
       
     def makeAskForPlayerName(self, text = ""):
+        """Prints out a prompt for the user to input the name of the player they want to ask a card from.
 
+        Args:
+            text: Optional text parameter to be deleted in button click
+
+        Raises:
+            None.
+
+        """
         display_askOtherPlayerName = tk.Label(self, font = ("Purisa", 18), text ="Who would you like to ask for a card?", pady = 0, bg = 'alice blue')
         display_askOtherPlayerName.place(relx = 0.31, rely = 0.72)
         
@@ -187,6 +255,18 @@ class Canvas(tk.Canvas):
             
     
     def makeAskForCardPrompt(self, askedPlayerName, buttons, label, text =""):
+        """Prints out a prompt for the user to ask for a card.
+
+        Args:
+            askedPlayerName: The name of the player the user wants to ask for a card.
+            buttons: buttons to be removed
+            label: labels to be forgotten
+            text: Optional text parameter to be deleted in button click.
+
+        Raises:
+            None.
+
+        """
         for player in self.game.player_list:
             if askedPlayerName == player.name:
                 self.game.asked_player = player
@@ -215,6 +295,18 @@ class Canvas(tk.Canvas):
             askCardValue_button.place(relx = (0.25 + button_indent), rely = 0.8)
 
     def processCheckRequest(self, crd, button, button_list, text = ""):
+        """Checks how many cards are left, if cards need dealing, and if players finish/how many players are left.
+
+        Args:
+            crd: card asked for in makeaskforcardprompt
+            button: button to be removed
+            button_list: list of buttons to be removed
+            text: Optional text parameter to be deleted in button click.
+
+        Raises:
+            None.
+
+        """
         print("Card asked for: ", crd.card_value + crd.card_suit)
         button.place_forget()
         testRequest = self.game.checkRequest(self.game.asked_player, crd) #testing
@@ -320,6 +412,15 @@ class Canvas(tk.Canvas):
             
 
     def display_winner_screen(self):
+        """Displays the winning screen when there are no/one players left.
+
+        Args:
+            None
+
+        Raises:
+            None.
+
+        """
         print("made it to display_winner_screen")
         text_winner = " "
         self.game.finished_players.append(self.game.player_list[0])
@@ -345,6 +446,7 @@ class Canvas(tk.Canvas):
         newGame_button['command'] = partial(self.askNumPlayers, endGame_button, newGame_button, new_game_bool)    
            
     def display_start_page(self, button1 = ""):
+    """Displays the start page."""
         self.clear_canvas()
         
         if(isinstance(button1, tk.Button)):
@@ -358,10 +460,12 @@ class Canvas(tk.Canvas):
         gameRules_button['command'] = partial(self.display_game_rules, gameRules_button, startGame_button)
         
     def clear_canvas(self):
+    """Clears the canvas."""
         self.delete("all")
 
 
     def display_game_rules(self, button1, button2):
+    """Display's the games rules."""
         self.clear_canvas()
         button1.destroy()
         button2.destroy()
